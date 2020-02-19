@@ -164,7 +164,7 @@ void vPortSysTickHandler( void )
 	if ( xTaskGetSchedulerState() != taskSCHEDULER_NOT_STARTED )
 	{
 		// Increment the Kernel Tick.
-		vTaskIncrementTick();
+		xTaskIncrementTick();
 
 		// If using preemption, also force a context switch.
 #if configUSE_PREEMPTION == 1

@@ -77,21 +77,27 @@ extern "C" {
 #define portDOUBLE		double
 #define portLONG		long
 #define portSHORT		short
-#define portSTACK_TYPE	unsigned portLONG
 #define portBASE_TYPE	long
+#define portSTACK_TYPE	unsigned portLONG
+
+
+typedef portSTACK_TYPE StackType_t;
+typedef long BaseType_t;
+typedef unsigned long UBaseType_t;
+
 
 #if( configUSE_16_BIT_TICKS == 1 )
-	typedef unsigned portSHORT portTickType;
-	#define portMAX_DELAY ( portTickType ) 0xffff
+	typedef unsigned portSHORT TickType_t;
+	#define portMAX_DELAY ( TickType_t ) 0xffff
 #else
-	typedef unsigned portLONG portTickType;
-	#define portMAX_DELAY ( portTickType ) 0xffffffff
+	typedef unsigned portLONG TickType_t;
+	#define portMAX_DELAY ( TickType_t ) 0xffffffff
 #endif
 /*-----------------------------------------------------------*/	
 
 /* Architecture specifics. */
 #define portSTACK_GROWTH				( -1 )
-#define portTICK_RATE_MS				( ( portTickType ) 1000 / configTICK_RATE_HZ )		
+#define portTICK_PERIOD_MS				( ( TickType_t ) 1000 / configTICK_RATE_HZ )		
 #define portBYTE_ALIGNMENT				4
 #define portNOP()                   	asm volatile ( "NOP" )
 #define portCRITICAL_NESTING_IN_TCB		1

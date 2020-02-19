@@ -77,9 +77,9 @@
 #define configUSE_TICK_HOOK							OS_USE_TICK_HOOK
 #define configTICK_RATE_HZ							( ( portTickType ) OS_TICK_RATE_HZ )
 #define configCPU_CLOCK_HZ							( ( unsigned long ) OS_CLK_FREQ )
-#define configMAX_PRIORITIES						( ( unsigned portBASE_TYPE ) OS_MAX_PRIORITIES )
+#define configMAX_PRIORITIES						OS_MAX_PRIORITIES
 #define configMINIMAL_STACK_SIZE					( OS_MINIMAL_STACK_SIZE )
-#define configISR_STACK_SIZE						configMINIMAL_STACK_SIZE
+#define configISR_STACK_SIZE						OS_MINIMAL_STACK_SIZE
 #define configTOTAL_HEAP_SIZE						( ( size_t ) OS_TOTAL_HEAP_SIZE )
 #define configMAX_TASK_NAME_LEN						( OS_MAX_TASK_NAME_LEN )
 #define configUSE_TRACE_FACILITY					OS_USE_TRACE_FACILITY
@@ -97,23 +97,27 @@
 #define configUSE_TIMERS                			1
 #define configTIMER_TASK_PRIORITY       			OS_TIMER_TASK_PRIORITY
 #define configTIMER_QUEUE_LENGTH        			OS_TIMER_QUEUE_LENGTH
-#define configTIMER_TASK_STACK_DEPTH    			configMINIMAL_STACK_SIZE
+#define configTIMER_TASK_STACK_DEPTH    			OS_MINIMAL_STACK_SIZE
 
 /* Co-routine definitions. */
 #define configUSE_CO_ROUTINES 						OS_USE_CO_ROUTINES
 #define configMAX_CO_ROUTINE_PRIORITIES 			OS_MAX_CO_ROUTINE_PRIORITIES
 
+/* Enables the test whereby a stack larger than the total heap size is
+requested. */
+#define configSTACK_DEPTH_TYPE uint32_t
+
 /* Set the following definitions to 1 to include the API function, or zero
 to exclude the API function. */
 
-#define INCLUDE_vTaskPrioritySet					OS_vTaskPrioritySet
-#define INCLUDE_uxTaskPriorityGet					OS_uxTaskPriorityGet
-#define INCLUDE_vTaskDelete							OS_vTaskDelete
-#define INCLUDE_vTaskCleanUpResources				OS_vTaskCleanUpResources
-#define INCLUDE_vTaskSuspend						OS_vTaskSuspend
-#define INCLUDE_vTaskDelayUntil						OS_vTaskDelayUntil
-#define INCLUDE_vTaskDelay							OS_vTaskDelay
-#define INCLUDE_uxTaskGetStackHighWaterMark			OS_uxTaskGetStackHighWaterMark
+#define INCLUDE_vTaskPrioritySet					OS_VTASKPRIORITYSET
+#define INCLUDE_uxTaskPriorityGet					OS_UXTASKPRIORITYGET
+#define INCLUDE_vTaskDelete							OS_VTASKDELETE
+#define INCLUDE_vTaskCleanUpResources				OS_VTASKCLEANUPRESOURCES
+#define INCLUDE_vTaskSuspend						OS_VTASKSUSPEND
+#define INCLUDE_vTaskDelayUntil						OS_VTASKDELAYUNTIL
+#define INCLUDE_vTaskDelay							OS_VTASKDELAY
+#define INCLUDE_uxTaskGetStackHighWaterMark			OS_UXTASKGETSTACKHIGHWATERMARK
 
 /* The priority at which the tick interrupt runs.  This should probably be
 kept at 1. */

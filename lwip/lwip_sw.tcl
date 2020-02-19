@@ -34,6 +34,8 @@ add_sw_property c_source FreeRTOS/src/api/netifapi.c
 add_sw_property c_source FreeRTOS/src/api/sockets.c
 add_sw_property c_source FreeRTOS/src/api/tcpip.c
 add_sw_property c_source FreeRTOS/src/arch/altera_tse_ethernetif.c
+add_sw_property c_source FreeRTOS/scr/arch/altera_avalon_tse.c
+add_sw_property c_source FreeRTOS/scr/arch/altera_avalon_tse_system_info.c
 add_sw_property c_source FreeRTOS/src/arch/alt_lwip_close.c
 add_sw_property c_source FreeRTOS/src/arch/alt_lwip_fcntl.c
 add_sw_property c_source FreeRTOS/src/arch/alt_lwip_read.c
@@ -90,6 +92,7 @@ add_sw_property c_source FreeRTOS/src/netif/ppp/vj.c
 
 # Include files
 add_sw_property include_source FreeRTOS/inc/altera_avalon_tse.h
+add_sw_property include_source FreeRTOS/inc/altera_avalon_tse_system_info.h
 add_sw_property include_source FreeRTOS/inc/ping.h
 add_sw_property include_source FreeRTOS/inc/altera_tse_ethernetif.h
 add_sw_property include_source FreeRTOS/inc/lwipopts.h
@@ -164,6 +167,9 @@ add_sw_property include_directory inc/ipv4
 # Overriden HAL files
 add_sw_property excluded_hal_source HAL/inc/os/alt_syscall.h
 add_sw_property excluded_hal_source drivers/inc/altera_avalon_tse.h
+add_sw_property excluded_hal_source drivers/src/altera_avalon_tse.c
+add_sw_property excluded_hal_source drivers/inc/altera_avalon_tse_system_info.h
+add_sw_property excluded_hal_source drivers/scr/altera_avalon_tse_system_info.c
 
 # This driver supports only FreeRTOS BSP (OS) type
 add_sw_property supported_bsp_type FreeRTOS

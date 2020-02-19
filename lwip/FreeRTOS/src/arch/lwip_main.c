@@ -527,7 +527,7 @@ void lwip_initialize_phys(void)
                     	pphy_profiles[i]->phy_cfg(pmac);
 
                     	// and restart the Auto-Negotiation
-                    	IOWR(&pmac->mdio1.CONTROL, 0, (PCS_CTL_an_enable | PCS_CTL_an_restart));
+                    	IOWR(&pmac->mdio1.CONTROL, 0, (1<<12 | 1<<9));
                     }
 
                     // and done for this PHY
