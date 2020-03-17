@@ -141,7 +141,7 @@ echo -e "\n1. Preparing software Nios II Packages!";
 # copy all source files we need
 echo "    - Copy FreeRTOS sources";
 cp FreeRTOS_src/Source/croutine.c "${INST_PATH}/freertos/FreeRTOS/src";
-cp FreeRTOS_src/Source/portable/MemMang/heap_3.c "${INST_PATH}/freertos/FreeRTOS/src";
+cp FreeRTOS_src/Source/portable/MemMang/heap_1.c "${INST_PATH}/freertos/FreeRTOS/src";
 cp FreeRTOS_src/Source/list.c "${INST_PATH}/freertos/FreeRTOS/src";
 
 cp nios2_freertos_port/port.c "${INST_PATH}/freertos/FreeRTOS/src/";
@@ -266,7 +266,7 @@ if [ $? -eq 0 ]; then
 
 	# clean up all copied stuff
 	rm "${INST_PATH}/freertos/FreeRTOS/src/croutine.c";
-	rm "${INST_PATH}/freertos/FreeRTOS/src/heap_3.c";
+	rm "${INST_PATH}/freertos/FreeRTOS/src/heap_1.c";
 	rm "${INST_PATH}/freertos/FreeRTOS/src/list.c";
 	rm "${INST_PATH}/freertos/FreeRTOS/src/port.c";
 	rm "${INST_PATH}/freertos/FreeRTOS/src/port_asm.S";

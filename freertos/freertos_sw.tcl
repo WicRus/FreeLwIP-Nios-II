@@ -37,7 +37,7 @@ add_sw_property c_source FreeRTOS/src/alt_env_lock.c
 add_sw_property c_source FreeRTOS/src/alt_malloc_lock.c
 add_sw_property c_source FreeRTOS/src/alt_main.c
 add_sw_property c_source FreeRTOS/src/croutine.c
-add_sw_property c_source FreeRTOS/src/heap_3.c
+add_sw_property c_source FreeRTOS/src/heap_1.c
 add_sw_property c_source FreeRTOS/src/list.c
 add_sw_property c_source FreeRTOS/src/port.c
 add_sw_property c_source FreeRTOS/src/queue.c
@@ -140,8 +140,8 @@ add_sw_setting decimal_number system_h_define task.max_task_name_len OS_MAX_TASK
 #
 # Memmory Settings
 # 
-#add_sw_setting decimal_number system_h_define memory.total_heap_size OS_TOTAL_HEAP_SIZE 8388608 "The total amount of RAM available to the kernel.
-#This value will only be used if your application makes use of one of the sample memory allocation schemes provided in the FreeRTOS source code download. See the memory configuration section for further details."
+add_sw_setting decimal_number system_h_define memory.total_heap_size OS_TOTAL_HEAP_SIZE 1048576 "The total amount of RAM available to the kernel.
+This value will only be used if your application makes use of one of the sample memory allocation schemes provided in the FreeRTOS source code download. See the memory configuration section for further details."
 
 add_sw_setting boolean system_h_define memory.malloc_failed_hook OS_USE_MALLOC_FAILED_HOOK 0 "Defines whether vApplicationMallocFailedHook should be called on memory allocation failure"
 
