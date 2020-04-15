@@ -28,6 +28,7 @@ add_sw_property c_source FreeRTOS/src/ping.c
 add_sw_property c_source FreeRTOS/src/api/api_lib.c
 add_sw_property c_source FreeRTOS/src/api/api_msg.c
 add_sw_property c_source FreeRTOS/src/api/err.c
+add_sw_property c_source FreeRTOS/src/api/if_api.c
 add_sw_property c_source FreeRTOS/src/api/netbuf.c
 add_sw_property c_source FreeRTOS/src/api/netdb.c
 add_sw_property c_source FreeRTOS/src/api/netifapi.c
@@ -43,52 +44,78 @@ add_sw_property c_source FreeRTOS/src/arch/alt_lwip_write.c
 add_sw_property c_source FreeRTOS/src/arch/lwip_main.c
 add_sw_property c_source FreeRTOS/src/arch/lwip_tse_mac.c
 add_sw_property c_source FreeRTOS/src/arch/sys_arch.c
-add_sw_property c_source FreeRTOS/src/core/def.c
-add_sw_property c_source FreeRTOS/src/core/dhcp.c
-add_sw_property c_source FreeRTOS/src/core/dns.c
-add_sw_property c_source FreeRTOS/src/core/init.c
+add_sw_property c_source FreeRTOS/src/core/ipv4/acd.c
 add_sw_property c_source FreeRTOS/src/core/ipv4/autoip.c
+add_sw_property c_source FreeRTOS/src/core/ipv4/dhcp.c
+add_sw_property c_source FreeRTOS/src/core/ipv4/etharp.c
 add_sw_property c_source FreeRTOS/src/core/ipv4/icmp.c
 add_sw_property c_source FreeRTOS/src/core/ipv4/igmp.c
-add_sw_property c_source FreeRTOS/src/core/ipv4/inet.c
-add_sw_property c_source FreeRTOS/src/core/ipv4/inet_chksum.c
-add_sw_property c_source FreeRTOS/src/core/ipv4/ip.c
-add_sw_property c_source FreeRTOS/src/core/ipv4/ip_addr.c
-add_sw_property c_source FreeRTOS/src/core/ipv4/ip_frag.c
+add_sw_property c_source FreeRTOS/src/core/ipv4/ip4.c
+add_sw_property c_source FreeRTOS/src/core/ipv4/ip4_addr.c
+add_sw_property c_source FreeRTOS/src/core/ipv4/ip4_frag.c
+
+
+add_sw_property c_source FreeRTOS/src/core/altcp.c
+add_sw_property c_source FreeRTOS/src/core/altcp_alloc.c
+add_sw_property c_source FreeRTOS/src/core/altcp_tcp.c
+add_sw_property c_source FreeRTOS/src/core/def.c
+add_sw_property c_source FreeRTOS/src/core/dns.c
+add_sw_property c_source FreeRTOS/src/core/inet_chksum.c
+add_sw_property c_source FreeRTOS/src/core/init.c
+add_sw_property c_source FreeRTOS/src/core/ip.c
 add_sw_property c_source FreeRTOS/src/core/mem.c
 add_sw_property c_source FreeRTOS/src/core/memp.c
 add_sw_property c_source FreeRTOS/src/core/netif.c
 add_sw_property c_source FreeRTOS/src/core/pbuf.c
 add_sw_property c_source FreeRTOS/src/core/raw.c
-add_sw_property c_source FreeRTOS/src/core/snmp/asn1_dec.c
-add_sw_property c_source FreeRTOS/src/core/snmp/asn1_enc.c
-add_sw_property c_source FreeRTOS/src/core/snmp/mib2.c
-add_sw_property c_source FreeRTOS/src/core/snmp/mib_structs.c
-add_sw_property c_source FreeRTOS/src/core/snmp/msg_in.c
-add_sw_property c_source FreeRTOS/src/core/snmp/msg_out.c
 add_sw_property c_source FreeRTOS/src/core/stats.c
 add_sw_property c_source FreeRTOS/src/core/sys.c
 add_sw_property c_source FreeRTOS/src/core/tcp.c
 add_sw_property c_source FreeRTOS/src/core/tcp_in.c
 add_sw_property c_source FreeRTOS/src/core/tcp_out.c
-add_sw_property c_source FreeRTOS/src/core/timers.c
+add_sw_property c_source FreeRTOS/src/core/timeouts.c
 add_sw_property c_source FreeRTOS/src/core/udp.c
-add_sw_property c_source FreeRTOS/src/netif/etharp.c
-add_sw_property c_source FreeRTOS/src/netif/ethernetif.c
+
+
+add_sw_property c_source FreeRTOS/src/netif/bridgeif.c
+add_sw_property c_source FreeRTOS/src/netif/bridgeif_fdb.c
+add_sw_property c_source FreeRTOS/src/netif/ethernet.c
+add_sw_property c_source FreeRTOS/src/netif/lowpan6.c
+add_sw_property c_source FreeRTOS/src/netif/lowpan6_ble.c
+add_sw_property c_source FreeRTOS/src/netif/lowpan6_common.c
 add_sw_property c_source FreeRTOS/src/netif/slipif.c
+add_sw_property c_source FreeRTOS/src/netif/zepif.c
+
 add_sw_property c_source FreeRTOS/src/netif/ppp/auth.c
-add_sw_property c_source FreeRTOS/src/netif/ppp/chap.c
-add_sw_property c_source FreeRTOS/src/netif/ppp/chpms.c
+add_sw_property c_source FreeRTOS/src/netif/ppp/ccp.c
+add_sw_property c_source FreeRTOS/src/netif/ppp/chap_ms.c
+add_sw_property c_source FreeRTOS/src/netif/ppp/chap-md5.c
+add_sw_property c_source FreeRTOS/src/netif/ppp/chap-new.c
+add_sw_property c_source FreeRTOS/src/netif/ppp/demand.c
+add_sw_property c_source FreeRTOS/src/netif/ppp/eap.c
+add_sw_property c_source FreeRTOS/src/netif/ppp/ecp.c
+add_sw_property c_source FreeRTOS/src/netif/ppp/eui64.c
 add_sw_property c_source FreeRTOS/src/netif/ppp/fsm.c
 add_sw_property c_source FreeRTOS/src/netif/ppp/ipcp.c
+add_sw_property c_source FreeRTOS/src/netif/ppp/ipv6cp.c
 add_sw_property c_source FreeRTOS/src/netif/ppp/lcp.c
 add_sw_property c_source FreeRTOS/src/netif/ppp/magic.c
-add_sw_property c_source FreeRTOS/src/netif/ppp/md5.c
-add_sw_property c_source FreeRTOS/src/netif/ppp/pap.c
+add_sw_property c_source FreeRTOS/src/netif/ppp/mppe.c
 add_sw_property c_source FreeRTOS/src/netif/ppp/ppp.c
-add_sw_property c_source FreeRTOS/src/netif/ppp/ppp_oe.c
-add_sw_property c_source FreeRTOS/src/netif/ppp/randm.c
+add_sw_property c_source FreeRTOS/src/netif/ppp/pppapi.c
+add_sw_property c_source FreeRTOS/src/netif/ppp/pppcrypt.c
+add_sw_property c_source FreeRTOS/src/netif/ppp/pppoe.c
+add_sw_property c_source FreeRTOS/src/netif/ppp/pppol2tp.c
+add_sw_property c_source FreeRTOS/src/netif/ppp/pppos.c
+add_sw_property c_source FreeRTOS/src/netif/ppp/upap.c
+add_sw_property c_source FreeRTOS/src/netif/ppp/utils.c
 add_sw_property c_source FreeRTOS/src/netif/ppp/vj.c
+
+add_sw_property c_source FreeRTOS/src/netif/ppp/polarssl/arc4.c
+add_sw_property c_source FreeRTOS/src/netif/ppp/polarssl/des.c
+add_sw_property c_source FreeRTOS/src/netif/ppp/polarssl/md4.c
+add_sw_property c_source FreeRTOS/src/netif/ppp/polarssl/md5.c
+add_sw_property c_source FreeRTOS/src/netif/ppp/polarssl/sha1.c
 
 # Include files
 add_sw_property include_source FreeRTOS/inc/altera_avalon_tse.h
@@ -98,29 +125,47 @@ add_sw_property include_source FreeRTOS/inc/altera_tse_ethernetif.h
 add_sw_property include_source FreeRTOS/inc/lwipopts.h
 add_sw_property include_source FreeRTOS/inc/lwip_main.h
 add_sw_property include_source FreeRTOS/inc/triple_speed_ethernet_regs.h
+
 add_sw_property include_source FreeRTOS/inc/arch/cc.h
 add_sw_property include_source FreeRTOS/inc/arch/perf.h
 add_sw_property include_source FreeRTOS/inc/arch/sys_arch.h
-add_sw_property include_source FreeRTOS/inc/ipv4/lwip/autoip.h
-add_sw_property include_source FreeRTOS/inc/ipv4/lwip/icmp.h
-add_sw_property include_source FreeRTOS/inc/ipv4/lwip/igmp.h
-add_sw_property include_source FreeRTOS/inc/ipv4/lwip/inet.h
-add_sw_property include_source FreeRTOS/inc/ipv4/lwip/inet_chksum.h
-add_sw_property include_source FreeRTOS/inc/ipv4/lwip/ip.h
-add_sw_property include_source FreeRTOS/inc/ipv4/lwip/ip_addr.h
-add_sw_property include_source FreeRTOS/inc/ipv4/lwip/ip_frag.h
+
+add_sw_property include_source FreeRTOS/inc/lwip/acd.h
+add_sw_property include_source FreeRTOS/inc/lwip/altcp.h
+add_sw_property include_source FreeRTOS/inc/lwip/altcp_tcp.h
+add_sw_property include_source FreeRTOS/inc/lwip/altcp_tls.h
 add_sw_property include_source FreeRTOS/inc/lwip/api.h
-add_sw_property include_source FreeRTOS/inc/lwip/api_msg.h
 add_sw_property include_source FreeRTOS/inc/lwip/arch.h
+add_sw_property include_source FreeRTOS/inc/lwip/autoip.h
 add_sw_property include_source FreeRTOS/inc/lwip/debug.h
 add_sw_property include_source FreeRTOS/inc/lwip/def.h
 add_sw_property include_source FreeRTOS/inc/lwip/dhcp.h
+add_sw_property include_source FreeRTOS/inc/lwip/dhcp6.h
 add_sw_property include_source FreeRTOS/inc/lwip/dns.h
 add_sw_property include_source FreeRTOS/inc/lwip/err.h
+add_sw_property include_source FreeRTOS/inc/lwip/errno.h
+add_sw_property include_source FreeRTOS/inc/lwip/etharp.h
+add_sw_property include_source FreeRTOS/inc/lwip/ethip6.h
+add_sw_property include_source FreeRTOS/inc/lwip/icmp.h
+add_sw_property include_source FreeRTOS/inc/lwip/icmp6.h
+add_sw_property include_source FreeRTOS/inc/lwip/if_api.h
+add_sw_property include_source FreeRTOS/inc/lwip/igmp.h
+add_sw_property include_source FreeRTOS/inc/lwip/inet.h
+add_sw_property include_source FreeRTOS/inc/lwip/inet_chksum.h
 add_sw_property include_source FreeRTOS/inc/lwip/init.h
+add_sw_property include_source FreeRTOS/inc/lwip/ip.h
+add_sw_property include_source FreeRTOS/inc/lwip/ip_addr.h
+add_sw_property include_source FreeRTOS/inc/lwip/ip4.h
+add_sw_property include_source FreeRTOS/inc/lwip/ip4_addr.h
+add_sw_property include_source FreeRTOS/inc/lwip/ip4_frag.h
+add_sw_property include_source FreeRTOS/inc/lwip/ip6.h
+add_sw_property include_source FreeRTOS/inc/lwip/ip6_addr.h
+add_sw_property include_source FreeRTOS/inc/lwip/ip6_frag.h
+add_sw_property include_source FreeRTOS/inc/lwip/ip6_zone.h
 add_sw_property include_source FreeRTOS/inc/lwip/mem.h
 add_sw_property include_source FreeRTOS/inc/lwip/memp.h
-add_sw_property include_source FreeRTOS/inc/lwip/memp_std.h
+add_sw_property include_source FreeRTOS/inc/lwip/mld6.h
+add_sw_property include_source FreeRTOS/inc/lwip/nd6.h
 add_sw_property include_source FreeRTOS/inc/lwip/netbuf.h
 add_sw_property include_source FreeRTOS/inc/lwip/netdb.h
 add_sw_property include_source FreeRTOS/inc/lwip/netif.h
@@ -130,34 +175,91 @@ add_sw_property include_source FreeRTOS/inc/lwip/pbuf.h
 add_sw_property include_source FreeRTOS/inc/lwip/raw.h
 add_sw_property include_source FreeRTOS/inc/lwip/sio.h
 add_sw_property include_source FreeRTOS/inc/lwip/snmp.h
-add_sw_property include_source FreeRTOS/inc/lwip/snmp_asn1.h
-add_sw_property include_source FreeRTOS/inc/lwip/snmp_msg.h
-add_sw_property include_source FreeRTOS/inc/lwip/snmp_structs.h
 add_sw_property include_source FreeRTOS/inc/lwip/sockets.h
 add_sw_property include_source FreeRTOS/inc/lwip/stats.h
 add_sw_property include_source FreeRTOS/inc/lwip/sys.h
 add_sw_property include_source FreeRTOS/inc/lwip/tcp.h
+add_sw_property include_source FreeRTOS/inc/lwip/tcpbase.h
 add_sw_property include_source FreeRTOS/inc/lwip/tcpip.h
-add_sw_property include_source FreeRTOS/inc/lwip/tcp_impl.h
-add_sw_property include_source FreeRTOS/inc/lwip/timers.h
+add_sw_property include_source FreeRTOS/inc/lwip/timeouts.h
 add_sw_property include_source FreeRTOS/inc/lwip/udp.h
+
+add_sw_property include_source FreeRTOS/inc/lwip/priv/altcp_priv.h
+add_sw_property include_source FreeRTOS/inc/lwip/priv/api_msg.h
+add_sw_property include_source FreeRTOS/inc/lwip/priv/mem_priv.h
+add_sw_property include_source FreeRTOS/inc/lwip/priv/memp_priv.h
+add_sw_property include_source FreeRTOS/inc/lwip/priv/memp_std.h
+add_sw_property include_source FreeRTOS/inc/lwip/priv/nd6_priv.h
+add_sw_property include_source FreeRTOS/inc/lwip/priv/raw_priv.h
+add_sw_property include_source FreeRTOS/inc/lwip/priv/sockets_priv.h
+add_sw_property include_source FreeRTOS/inc/lwip/priv/tcp_priv.h
+add_sw_property include_source FreeRTOS/inc/lwip/priv/tcpip_priv.h
+
+add_sw_property include_source FreeRTOS/inc/lwip/prot/acd.h
+add_sw_property include_source FreeRTOS/inc/lwip/prot/autoip.h
+add_sw_property include_source FreeRTOS/inc/lwip/prot/dhcp.h
+add_sw_property include_source FreeRTOS/inc/lwip/prot/dhcp6.h
+add_sw_property include_source FreeRTOS/inc/lwip/prot/dns.h
+add_sw_property include_source FreeRTOS/inc/lwip/prot/etharp.h
+add_sw_property include_source FreeRTOS/inc/lwip/prot/ethernet.h
+add_sw_property include_source FreeRTOS/inc/lwip/prot/iana.h
+add_sw_property include_source FreeRTOS/inc/lwip/prot/icmp.h
+add_sw_property include_source FreeRTOS/inc/lwip/prot/icmp6.h
+add_sw_property include_source FreeRTOS/inc/lwip/prot/ieee.h
+add_sw_property include_source FreeRTOS/inc/lwip/prot/igmp.h
+add_sw_property include_source FreeRTOS/inc/lwip/prot/ip.h
+add_sw_property include_source FreeRTOS/inc/lwip/prot/ip4.h
+add_sw_property include_source FreeRTOS/inc/lwip/prot/ip6.h
+add_sw_property include_source FreeRTOS/inc/lwip/prot/mld6.h
+add_sw_property include_source FreeRTOS/inc/lwip/prot/nd6.h
+add_sw_property include_source FreeRTOS/inc/lwip/prot/tcp.h
+add_sw_property include_source FreeRTOS/inc/lwip/prot/udp.h
+
+add_sw_property include_source FreeRTOS/inc/netif/bridgeif.h
+add_sw_property include_source FreeRTOS/inc/netif/bridgeif_opts.h
 add_sw_property include_source FreeRTOS/inc/netif/etharp.h
-add_sw_property include_source FreeRTOS/inc/netif/ppp_oe.h
+add_sw_property include_source FreeRTOS/inc/netif/ethernet.h
+add_sw_property include_source FreeRTOS/inc/netif/ieee802154.h
+add_sw_property include_source FreeRTOS/inc/netif/lowpan6.h
+add_sw_property include_source FreeRTOS/inc/netif/lowpan6_ble.h
+add_sw_property include_source FreeRTOS/inc/netif/lowpan6_common.h
+add_sw_property include_source FreeRTOS/inc/netif/lowpan6_opts.h
 add_sw_property include_source FreeRTOS/inc/netif/slipif.h
-add_sw_property include_source FreeRTOS/inc/os/alt_syscall.h
+add_sw_property include_source FreeRTOS/inc/netif/zepif.h
+
+
 add_sw_property include_source FreeRTOS/inc/netif/ppp/auth.h
+add_sw_property include_source FreeRTOS/inc/netif/ppp/ccp.h
 add_sw_property include_source FreeRTOS/inc/netif/ppp/chap.h
+add_sw_property include_source FreeRTOS/inc/netif/ppp/chap_ms.h
+add_sw_property include_source FreeRTOS/inc/netif/ppp/chap-md5.h
+add_sw_property include_source FreeRTOS/inc/netif/ppp/chap-new.h
 add_sw_property include_source FreeRTOS/inc/netif/ppp/chpms.h
+add_sw_property include_source FreeRTOS/inc/netif/ppp/eap.h
+add_sw_property include_source FreeRTOS/inc/netif/ppp/ecp.h
+add_sw_property include_source FreeRTOS/inc/netif/ppp/eui64.h
 add_sw_property include_source FreeRTOS/inc/netif/ppp/fsm.h
 add_sw_property include_source FreeRTOS/inc/netif/ppp/ipcp.h
+add_sw_property include_source FreeRTOS/inc/netif/ppp/ipv6cp.h
 add_sw_property include_source FreeRTOS/inc/netif/ppp/lcp.h
 add_sw_property include_source FreeRTOS/inc/netif/ppp/magic.h
 add_sw_property include_source FreeRTOS/inc/netif/ppp/md5.h
+add_sw_property include_source FreeRTOS/inc/netif/ppp/mppe.h
 add_sw_property include_source FreeRTOS/inc/netif/ppp/pap.h
 add_sw_property include_source FreeRTOS/inc/netif/ppp/ppp.h
+add_sw_property include_source FreeRTOS/inc/netif/ppp/ppp_impl.h
+add_sw_property include_source FreeRTOS/inc/netif/ppp/ppp_opts.h
+add_sw_property include_source FreeRTOS/inc/netif/ppp/pppapi.h
+add_sw_property include_source FreeRTOS/inc/netif/ppp/pppcrypt.h
 add_sw_property include_source FreeRTOS/inc/netif/ppp/pppdebug.h
+add_sw_property include_source FreeRTOS/inc/netif/ppp/pppoe.h
+add_sw_property include_source FreeRTOS/inc/netif/ppp/pppol2tp.h
+add_sw_property include_source FreeRTOS/inc/netif/ppp/pppos.h
 add_sw_property include_source FreeRTOS/inc/netif/ppp/randm.h
+add_sw_property include_source FreeRTOS/inc/netif/ppp/upap.h
 add_sw_property include_source FreeRTOS/inc/netif/ppp/vj.h
+
+add_sw_property include_source FreeRTOS/inc/os/alt_syscall.h
 
 
 # Include paths
@@ -191,7 +293,7 @@ add_sw_setting boolean system_h_define proto.enable_vlan CONF_LWIP_PROTO_VLAN fa
 add_sw_setting boolean system_h_define proto.enable_icmp CONF_LWIP_PROTO_ICMP true "Enable ICMP support"
 add_sw_setting boolean system_h_define proto.enable_autoip CONF_LWIP_PROTO_AUTOIP false "Enable AutoIP support"
 add_sw_setting boolean system_h_define proto.enable_snmp CONF_LWIP_PROTO_SNMP false "Enable SNMP support"
-add_sw_setting boolean system_h_define proto.enable_igmp CONF_LWIP_PROTO_IGMP false "Enable IGMP support"
+add_sw_setting boolean system_h_define proto.enable_igmp CONF_LWIP_PROTO_IGMP true "Enable IGMP support"
 add_sw_setting boolean system_h_define proto.enable_dns CONF_LWIP_PROTO_DNS false "Enable DNS support"
 add_sw_setting boolean system_h_define proto.enable_udp CONF_LWIP_PROTO_UDP true "Enable UDP support"
 add_sw_setting boolean system_h_define proto.enable_tcp CONF_LWIP_PROTO_TCP true "Enable TCP support"

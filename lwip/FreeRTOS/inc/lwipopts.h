@@ -48,6 +48,8 @@
 // include Altera system configuraion
 #include <system.h>
 
+#define LWIP_IPV4                       1
+#define LWIP_DONT_PROVIDE_BYTEORDER_FUNCTIONS
 /*
    -----------------------------------------------
    ---------- Platform specific locking ----------
@@ -459,6 +461,17 @@
  * filter on recv operations.
  */
 #define IP_SOF_BROADCAST_RECV           0
+/*
+   ----------------------------------
+   -------- Multicast options -------
+   ----------------------------------
+*/
+/**
+ * LWIP_MULTICAST_TX_OPTIONS==1: Enable multicast TX support like the socket options
+ * IP_MULTICAST_TTL/IP_MULTICAST_IF/IP_MULTICAST_LOOP, as well as (currently only)
+ * core support for the corresponding IPv6 options.
+ */
+#define LWIP_MULTICAST_TX_OPTIONS 1
 
 /*
    ----------------------------------
@@ -950,7 +963,7 @@
  * The priority value itself is platform-dependent, but is passed to
  * sys_thread_new() when the thread is created.
  */
-#define TCPIP_THREAD_PRIO               		(configMAX_PRIORITIES  - 2)
+#define TCPIP_THREAD_PRIO               		(5  - 2)
 
 /**
  * TCPIP_MBOX_SIZE: The mailbox size for the tcpip thread messages
@@ -1087,8 +1100,8 @@
  * LWIP_COMPAT_SOCKETS==1: Enable BSD-style sockets functions names.
  * (only used if you use sockets.c)
  */
-#define LWIP_COMPAT_SOCKETS             		1
-
+#define LWIP_COMPAT_SOCKETS             		0
+#define LWIP_COMPAT_MUTEX                       0
 /**
  * LWIP_SOCKET_OFFSET==n: Increases the file descriptor number created by LwIP with n.
  * This can be usefull when there are multiple API's which create file descriptors.
