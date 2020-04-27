@@ -294,7 +294,7 @@ add_sw_setting boolean system_h_define proto.enable_icmp CONF_LWIP_PROTO_ICMP tr
 add_sw_setting boolean system_h_define proto.enable_autoip CONF_LWIP_PROTO_AUTOIP false "Enable AutoIP support"
 add_sw_setting boolean system_h_define proto.enable_snmp CONF_LWIP_PROTO_SNMP false "Enable SNMP support"
 add_sw_setting boolean system_h_define proto.enable_igmp CONF_LWIP_PROTO_IGMP true "Enable IGMP support"
-add_sw_setting boolean system_h_define proto.enable_dns CONF_LWIP_PROTO_DNS false "Enable DNS support"
+add_sw_setting boolean system_h_define proto.enable_dns CONF_LWIP_PROTO_DNS true "Enable DNS support"
 add_sw_setting boolean system_h_define proto.enable_udp CONF_LWIP_PROTO_UDP true "Enable UDP support"
 add_sw_setting boolean system_h_define proto.enable_tcp CONF_LWIP_PROTO_TCP true "Enable TCP support"
 add_sw_setting boolean system_h_define proto.enable_dhcp CONF_LWIP_PROTO_DHCP true "Enable DHCP support"
