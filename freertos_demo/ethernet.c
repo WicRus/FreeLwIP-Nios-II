@@ -35,15 +35,23 @@ extern void prvMySocketTest(void *params);
 
 #define ETH_STATUS_DISCONNECTED			0x20
 
+
 // callback function for when the DHCP subsystem acquires an IP address.
 static void StatusCallback(struct netif* netif)
 {
 	// get IP and stuff
 	printf("[ethernet] Acquired IP address via DHCP client for interface: %s\n", netif->name);
 
-	printf("[ethernet] IP address : %s\n", print_ipad(netif->ip_addr.addr));
-	printf("[ethernet] Subnet     : %s\n", print_ipad(netif->netmask.addr));
-	printf("[ethernet] Gateway    : %s\n", print_ipad(netif->gw.addr));
+	char buf[255];
+
+	print_ipad(netif->ip_addr.addr, buf);
+	printf("[ethernet] IP address : %s\n", buf);
+
+	print_ipad(netif->netmask.addr, buf);
+	printf("[ethernet] Subnet     : %s\n", buf);
+
+	print_ipad(netif->gw.addr, buf);
+	printf("[ethernet] Gateway    : %s\n", buf);
 }
 
 static void LinkCallback(__unused struct netif* netif)
@@ -62,7 +70,7 @@ int InitNetwork(void)
 
 	// Initialize LwIP TCP/IP stack.
 	// This function is blocking till the the interface is up.
-	lwip_initialize();
+	lwip_initialize(1);
 
 	return EXIT_SUCCESS;
 }
@@ -80,7 +88,7 @@ static int WaitOnPHY(void)
 		printf("[ethernet] PHY INFO: Interface: %d Waiting for PHY\n", 0);
 
 		// initialize the structure necessary for "pmac" to function.
-		pmac = (np_tse_mac*) TSE_MAC_BASE;
+		pmac = (np_tse_mac*) TSE_MAC_0_BASE;
 
 		// we are using a Lantiq PHY
 		for (phyadd = 0x00; phyadd < 0xff; phyadd++) {
@@ -140,7 +148,7 @@ void xEthernetRun(__unused void* param)
 	}
 
 	// populate the local pmac structure upon successful network initialization.
-	np_tse_mac* pmac = (np_tse_mac*)TSE_MAC_BASE;
+	np_tse_mac* pmac = (np_tse_mac*)TSE_MAC_0_BASE;
 
 	// set a counter to allow for a brief network disconnect.
 	int nDisconnectCnt = 0;
@@ -220,8 +228,11 @@ int get_ip_addr(int iface, ip_addr_t* ipaddr, ip_addr_t* netmask, ip_addr_t* gw,
 	IP4_ADDR(gw, 192, 168, 0, 1);
 	*use_dhcp = 1;
 
-	if (*use_dhcp == 0)
-		printf("[ethernet] Static IP Address for interface %d %s\n", iface, print_ipad(ipaddr->addr));
+	if (*use_dhcp == 0) {
+		char buf[255];
+		print_ipad(ipaddr->addr, buf);
+		printf("[ethernet] Static IP Address for interface %d %s\n", iface, buf);
+	}
 	else
 		printf("[ethernet] Starting get IP via DHCP for interface %d\n", iface);
 

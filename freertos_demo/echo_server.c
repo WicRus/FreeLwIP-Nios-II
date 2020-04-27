@@ -16,7 +16,7 @@ void prvMySocketTest(__unused void *params)
 
 	printf("Starting socket test interface.\n");
 
-	lSocket = socket(AF_INET, SOCK_STREAM, 0);
+	lSocket = lwip_socket(AF_INET, SOCK_STREAM, 0);
 	printf("socket returns %d\n", lSocket);
 	if (lSocket < 0) {
 		perror("socket");
@@ -30,14 +30,13 @@ void prvMySocketTest(__unused void *params)
 	sLocalAddr.sin_port = htons(23);
 
 	printf("Binding socket\n");
-	if (bind(lSocket, (struct sockaddr *)&sLocalAddr, sizeof(sLocalAddr)) < 0) {
+	if (lwip_bind(lSocket, (struct sockaddr *)&sLocalAddr, sizeof(sLocalAddr)) < 0) {
 		perror("bind");
-		close(lSocket);
 		return;
 	}
 
 	printf("Listening for socket\n");
-	if (listen(lSocket, 20) != 0) {
+	if (lwip_listen(lSocket, 20) != 0) {
 		perror("listen");
 		close(lSocket);
 	    return;
@@ -52,13 +51,13 @@ void prvMySocketTest(__unused void *params)
 
 		printf("Waiting for new client\n");
 
-		clientfd = accept(lSocket, (struct sockaddr*)&client_addr, (socklen_t*)&addrlen);
+		clientfd = lwip_accept(lSocket, (struct sockaddr*)&client_addr, (socklen_t*)&addrlen);
 		printf("client socket %d connected from %s\n", clientfd, print_ipad(client_addr.sin_addr.s_addr));
 		if (clientfd > 0) {
 			do {
-				nbytes = read(clientfd, buffer, sizeof(buffer));
+				nbytes = lwip_read(clientfd, buffer, sizeof(buffer));
 				if (nbytes > 0)
-					write(clientfd, buffer, nbytes);
+					lwip_write(clientfd, buffer, nbytes);
 
 			}  while (nbytes>0);
 

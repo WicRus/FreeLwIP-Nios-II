@@ -1,3 +1,15 @@
+-------------------------------------------------------------------------------------
+Modifications made by NetTimeLogic GmbH
+!!! Note !!! - all modification were not tested for the full example project. Focus was to get open62541 up and running.
+
+- Updated port for Quartus 18.1 and Nios II Embedded Design Suite 18.1.0.v20180913-1045
+- Updated to LwIP-2.1.2
+- FreeRTOS V10.3.0 was used
+
+The full Quartus project can be found here:
+https://github.com/NetTimeLogic/opcua/tree/master/Src/Quartus_Project
+
+-------------------------------------------------------------------------------------
 Nios updated port for NiosEDS 11.0 and up
 Engineering Spirit (c) 2012 - 2013
 

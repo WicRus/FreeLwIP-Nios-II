@@ -54,9 +54,9 @@
 #include <stdio.h>
 #include <string.h>
 
-/* Scheduler includes. */
-#include "FreeRTOS.h"
-#include "task.h"
+// include FreeRTOS headers
+#include <FreeRTOS.h>
+#include <task.h>
 #include "semphr.h"
 #include "partest.h"
 #include "serial.h"
@@ -70,6 +70,8 @@
 #include "lwip/tcpip.h"
 #include "lwip/memp.h"
 #include "lwip/stats.h"
+
+
 
 /*! The size of the buffer in which the dynamic WEB page is created. */
 #define webMAX_PAGE_SIZE	KB(3) // currently around 1 KB
@@ -168,7 +170,7 @@ static unsigned portLONG ulPageHits = 0;
 			strcat( cDynamicPage, "<p><pre>Task          State  Priority  Stack	#<br>************************************************<br>" );
 
 			/* ... Then the list of tasks and their status... */
-			vTaskList( ( signed portCHAR * ) cDynamicPage + strlen( cDynamicPage ) );
+			//vTaskList(( signed portCHAR * ) cDynamicPage + strlen( cDynamicPage ) );
 
 			/* ... Finally the page footer. */
 			strcat( cDynamicPage, webHTML_END );
