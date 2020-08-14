@@ -53,7 +53,15 @@ add_sw_property c_source FreeRTOS/src/core/ipv4/igmp.c
 add_sw_property c_source FreeRTOS/src/core/ipv4/ip4.c
 add_sw_property c_source FreeRTOS/src/core/ipv4/ip4_addr.c
 add_sw_property c_source FreeRTOS/src/core/ipv4/ip4_frag.c
-
+add_sw_property c_source FreeRTOS/src/core/ipv6/dhcp6.c
+add_sw_property c_source FreeRTOS/src/core/ipv6/ethip6.c
+add_sw_property c_source FreeRTOS/src/core/ipv6/icmp6.c
+add_sw_property c_source FreeRTOS/src/core/ipv6/inet6.c
+add_sw_property c_source FreeRTOS/src/core/ipv6/ip6.c
+add_sw_property c_source FreeRTOS/src/core/ipv6/ip6_addr.c
+add_sw_property c_source FreeRTOS/src/core/ipv6/ip6_frag.c
+add_sw_property c_source FreeRTOS/src/core/ipv6/mld6.c
+add_sw_property c_source FreeRTOS/src/core/ipv6/nd6.c
 
 add_sw_property c_source FreeRTOS/src/core/altcp.c
 add_sw_property c_source FreeRTOS/src/core/altcp_alloc.c
@@ -264,7 +272,6 @@ add_sw_property include_source FreeRTOS/inc/os/alt_syscall.h
 
 # Include paths
 add_sw_property include_directory inc
-add_sw_property include_directory inc/ipv4
 
 # Overriden HAL files
 add_sw_property excluded_hal_source HAL/inc/os/alt_syscall.h
