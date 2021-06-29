@@ -85,6 +85,12 @@ if [ "${ANS}" != "yes" ] && [ "${ANS}" != "y" ]; then
 	exit 1;
 fi;
 
+#check git exist
+if ! [ `type -t git` ]; then
+	echo "Please install git." 1>&2;
+	exit 1;
+fi;
+
 # make directories just to be sure
 mkdir -p FreeRTOS_src 2> /dev/null;
 mkdir -p lwip 2> /dev/null;
