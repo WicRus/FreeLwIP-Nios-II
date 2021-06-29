@@ -13,6 +13,7 @@ extern "C"
 #include <netif/etharp.h>
 #include <ping.h>
 #include <math.h>
+#include <unistd.h>
 
 #include "BasicWEB.h"
 
@@ -35,7 +36,7 @@ extern void prvMySocketTest(void *params);
 
 #define ETH_STATUS_DISCONNECTED			0x20
 
-
+#define TSE_MAC_BASE ETH_TSE_BASE
 // callback function for when the DHCP subsystem acquires an IP address.
 static void StatusCallback(struct netif* netif)
 {
@@ -88,7 +89,7 @@ static int WaitOnPHY(void)
 		printf("[ethernet] PHY INFO: Interface: %d Waiting for PHY\n", 0);
 
 		// initialize the structure necessary for "pmac" to function.
-		pmac = (np_tse_mac*) TSE_MAC_0_BASE;
+		pmac = (np_tse_mac*) TSE_MAC_BASE;
 
 		// we are using a Lantiq PHY
 		for (phyadd = 0x00; phyadd < 0xff; phyadd++) {
@@ -127,7 +128,7 @@ static int WaitOnPHY(void)
 			mssleep(10);
 
 		printf("[ethernet] PHY INFO: PHY link detected, allowing network to start.\n");
-		
+
 		mssleep(1000);
 	}
 
@@ -148,15 +149,15 @@ void xEthernetRun(__unused void* param)
 	}
 
 	// populate the local pmac structure upon successful network initialization.
-	np_tse_mac* pmac = (np_tse_mac*)TSE_MAC_0_BASE;
+	// np_tse_mac* pmac = (np_tse_mac*)TSE_MAC_BASE;
 
 	// set a counter to allow for a brief network disconnect.
-	int nDisconnectCnt = 0;
+	// int nDisconnectCnt = 0;
 
 	// start the demo network tasks
 	sys_thread_new("TCP Echo Server", prvMySocketTest, NULL, KB(4), 3);
 	sys_thread_new("HTTP Server", vBasicWEBServer, NULL, KB(8), 3);
-	
+
 	// keep checking our network status, are we connected or disconnected?
 	while (1) {
 		// TODO wait for semaphore is network status changes
@@ -165,7 +166,7 @@ void xEthernetRun(__unused void* param)
 		mssleep(1000);
 
 #if 0
-		// TODO not implemented yet... 
+		// TODO not implemented yet...
 
 		status = IORD(&pmac->MDIO_IFACE.STATUS, 0);
 		if (!(status & ETH_STATUS_DISCONNECTED)) {
@@ -198,19 +199,19 @@ void xEthernetRun(__unused void* param)
 #endif
 	}
 
-	return 0;
+	return;
 }
 
 // callback wrapper for lwip to get the interface configurations
 int get_mac_addr(int iface, struct netif* ethif, unsigned char mac_addr[6])
-{	
+{
 	mac_addr[0] = 0x00;
 	mac_addr[1] = 0x07;
 	mac_addr[2] = 0xED;
 	mac_addr[3] = 0xFF;
 	mac_addr[4] = 0x68;
 	mac_addr[5] = 0xB0 + iface;
-	
+
 	// only show info if net is not NULL
 	if (ethif)
 		printf("[ethernet] Using Ethernet MAC address %02x:%02x:%02x:%02x:%02x:%02x for interface: %d\n",

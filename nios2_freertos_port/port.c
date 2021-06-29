@@ -48,10 +48,10 @@
 
 // This most Altera Dev kits use SYS_CLK_TIMER as the name of the tick timer
 #ifdef ALT_SYS_CLK
-#define SYS_CLK_IRQ TIMER_0_IRQ
-#define SYS_CLK_BASE TIMER_0_BASE
-#define SYS_CLK_FREQ TIMER_0_FREQ
-#define SYS_CLK_IRQ_INTERRUPT_CONTROLLER_ID TIMER_0_IRQ_INTERRUPT_CONTROLLER_ID
+#define SYS_CLK_IRQ TIMER_SYS_CLK##_IRQ
+#define SYS_CLK_BASE TIMER_SYS_CLK##_BASE
+#define SYS_CLK_FREQ TIMER_SYS_CLK##_FREQ
+#define SYS_CLK_IRQ_INTERRUPT_CONTROLLER_ID TIMER_SYS_CLK##_IRQ_INTERRUPT_CONTROLLER_ID
 #endif
 
 /*-----------------------------------------------------------*/
@@ -163,7 +163,7 @@ void vPortEndScheduler( void )
 void prvSetupTimerInterrupt( void )
 {
 	/* Try to register the interrupt handler. */
-	if ( -EINVAL == alt_irq_register( SYS_CLK_IRQ, 0x0, vPortSysTickHandler ) )
+	if ( -EINVAL == alt_irq_register( SYS_CLK_IRQ, 0x0, (alt_isr_func)vPortSysTickHandler ) )
 	{ 
 		/* Failed to install the Interrupt Handler. */
 		asm( "break" );

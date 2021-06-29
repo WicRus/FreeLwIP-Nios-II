@@ -1,6 +1,6 @@
 /*
     FreeRTOS V7.1.0 - Copyright (C) 2011 Real Time Engineers Ltd.
-	
+
 
     ***************************************************************************
      *                                                                       *
@@ -57,13 +57,13 @@
  * defined and/or created within this file:
  *
  * "Check" task -  This only executes every five seconds but has the highest
- * priority so is guaranteed to get processor time.  Its main function is to 
+ * priority so is guaranteed to get processor time.  Its main function is to
  * check that all the standard demo tasks are still operational.  The check
  * task will write an error message to the console should an error be detected
  * within any of the demo tasks.  The check task also toggles the LED defined
  * by mainCHECK_LED every 5 seconds while the system is error free, with the
  * toggle rate increasing to every 500ms should an error occur.
- * 
+ *
  * "Reg test" tasks - These fill the registers with known values, then check
  * that each register still contains its expected value.  Each task uses
  * different values.  The tasks run with very low priority so get preempted very
@@ -140,7 +140,7 @@ extern "C" {
  * Function prototypes, because i'm to lazy to create a header file...
  */
 
-extern int xEthernetRun(void* param);
+extern void xEthernetRun(void* param);
 extern void prvMySocketTest(void *params);
 
 #ifdef __cplusplus
@@ -149,7 +149,7 @@ extern void prvMySocketTest(void *params);
 
 /*
  * Execute all of the check functions to ensure the tests haven't failed.
- */ 
+ */
 static void prvCheckTask( void *pvParameters );
 
 /*
@@ -183,16 +183,16 @@ int main( void )
 	vStartGenericQueueTasks( mainGENERIC_QUEUE_PRIORITY );
 	vStartCountingSemaphoreTasks();
 	vStartRecursiveMutexTasks();
-    
+
 	/* prvCheckTask uses sprintf so requires more stack. */
 	xTaskCreate( prvCheckTask, "Check", configMINIMAL_STACK_SIZE, NULL, mainCHECK_TASK_PRIORITY, NULL );
-    
+
     /* The RegTest tasks as described at the top of this file. */
     xTaskCreate( prvFirstRegTestTask, "Rreg1", configMINIMAL_STACK_SIZE, mainREG_TEST_1_PARAMETER, mainREG_TEST_PRIORITY, NULL );
     xTaskCreate( prvSecondRegTestTask, "Rreg2", configMINIMAL_STACK_SIZE, mainREG_TEST_2_PARAMETER, mainREG_TEST_PRIORITY, NULL );
-	
+
 	/* start the network task to start the network */
-	xTaskCreate(xEthernetRun, "eth0", KB(4), NULL, mainQUEUE_POLL_PRIORITY, NULL);
+	xTaskCreate( xEthernetRun, "eth0", KB(4), NULL, mainQUEUE_POLL_PRIORITY, NULL);
 
 	/* This task has to be created last as it keeps account of the number of tasks
 	it expects to see running. */
@@ -200,16 +200,17 @@ int main( void )
 
     /* Finally start the scheduler. */
 	vTaskStartScheduler();
-    
+
 	/* Will only reach here if there is insufficient heap available to start
 	the scheduler. */
 	for( ;; );
 }
 /*-----------------------------------------------------------*/
-void vApplicationStackOverflowHook(__unused xTaskHandle *pxTask, signed char *pcTaskName )
+void vApplicationStackOverflowHook(__unused TaskHandle_t xTask, char *pcTaskName )
 {
 	printf("[free_rtos] Application stack overflow at task: %s\n", pcTaskName);
 }
+
 
 void vApplicationMallocFailedHook(void)
 {
@@ -218,7 +219,7 @@ void vApplicationMallocFailedHook(void)
 
 void _general_exception_handler( unsigned long ulCause, unsigned long ulStatus )
 {
-	/* This overrides the definition provided by the kernel.  Other exceptions 
+	/* This overrides the definition provided by the kernel.  Other exceptions
 	should be handled here. */
 	for( ;; )
     {
@@ -241,8 +242,8 @@ const char * pcMessage;
 	{
 		/* Wait until it is time to run the tests again. */
 		vTaskDelayUntil( &xLastExecutionTime, ulTicksToWait );
-		
-		/* Have any of the standard demo tasks detected an error in their 
+
+		/* Have any of the standard demo tasks detected an error in their
 		operation? */
 		if( xAreIntegerMathsTaskStillRunning() != pdTRUE )
 		{
@@ -309,7 +310,7 @@ const char * pcMessage;
         else if( ulLastRegTest2 == ulRegTest2Counter )
         {
             /* ulRegTest2Counter is no longer being incremented, indicating
-            that an error has been discovered in prvSecondRegTestTask(). */            
+            that an error has been discovered in prvSecondRegTestTask(). */
             ulTicksToWait = mainERROR_PERIOD;
             pcMessage = "Error: Reg Test2.\n";
         }
@@ -317,13 +318,13 @@ const char * pcMessage;
 		{
 			pcMessage = NULL;
 		}
-        
+
         /* Remember the counter values this time around so a counter failing
         to be incremented correctly can be spotted. */
         ulLastRegTest1 = ulRegTest1Counter;
         ulLastRegTest2 = ulRegTest2Counter;
-        
-        /* Print out an error message if there is one.  Mutual exclusion is 
+
+        /* Print out an error message if there is one.  Mutual exclusion is
         not used as this is the only task accessing stdout. */
         if( pcMessage != NULL )
         {
@@ -338,17 +339,17 @@ static void prvFirstRegTestTask( void *pvParameters )
     /* Check the parameters are passed in as expected. */
     if( pvParameters != mainREG_TEST_1_PARAMETER )
     {
-        /* Don't execute any further so an error is recognised by the check 
+        /* Don't execute any further so an error is recognised by the check
         task. */
         vTaskDelete( NULL );
     }
-    
+
     /* Fill registers with known values, then check that each register still
     contains its expected value.  An incorrect value is indicative of an error
-    in the context switching process. 
-    
+    in the context switching process.
+
     If no errors are found ulRegTest1Counter is incremented.  The check task
-    will recognise an error if ulRegTest1Counter stops being incremented. 
+    will recognise an error if ulRegTest1Counter stops being incremented.
     This task also performs a manual yield in the middle of its execution, just
     to increase the test coverage. */
     asm volatile (
@@ -442,15 +443,15 @@ static void prvSecondRegTestTask( void *pvParameters )
     /* Check the parameters are passed in as expected. */
     if( pvParameters != mainREG_TEST_2_PARAMETER )
     {
-        /* Don't execute any further so an error is recognised by the check 
+        /* Don't execute any further so an error is recognised by the check
         task. */
         vTaskDelete( NULL );
     }
-    
+
     /* Fill registers with known values, then check that each register still
     contains its expected value.  An incorrect value is indicative of an error
-    in the context switching process. 
-    
+    in the context switching process.
+
     If no errors are found ulRegTest2Counter is incremented.  The check task
     will recognise an error if ulRegTest2Counter stops being incremented. */
     asm volatile (

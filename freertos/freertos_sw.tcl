@@ -66,6 +66,8 @@ add_sw_property include_source FreeRTOS/inc/semphr.h
 add_sw_property include_source FreeRTOS/inc/StackMacros.h
 add_sw_property include_source FreeRTOS/inc/task.h
 add_sw_property include_source FreeRTOS/inc/timers.h
+add_sw_property include_source FreeRTOS/inc/deprecated_definitions.h
+add_sw_property include_source FreeRTOS/inc/stack_macros.h
 
 # Overridden HAL files
 add_sw_property excluded_hal_source HAL/src/alt_env_lock.c
@@ -208,21 +210,21 @@ add_sw_setting decimal_number system_h_define timers.timer_queue_length OS_TIMER
 #
 # Include Settings
 #
-add_sw_setting boolean system_h_define include.inc_task_prio_set OS_vTaskPrioritySet 1 "The macros starting 'INCLUDE' allow those components of the real time kernel not utilized by your application to be excluded from your build. This ensures the RTOS does not use any more ROM or RAM than necessary for your particular embedded application."
+add_sw_setting boolean system_h_define include.inc_task_prio_set OS_VTASKPRIORITYSET 1 "The macros starting 'INCLUDE' allow those components of the real time kernel not utilized by your application to be excluded from your build. This ensures the RTOS does not use any more ROM or RAM than necessary for your particular embedded application."
 
-add_sw_setting boolean system_h_define include.inc_task_prio_get OS_uxTaskPriorityGet 1 "The macros starting 'INCLUDE' allow those components of the real time kernel not utilized by your application to be excluded from your build. This ensures the RTOS does not use any more ROM or RAM than necessary for your particular embedded application."
+add_sw_setting boolean system_h_define include.inc_task_prio_get OS_UXTASKPRIORITYGET 1 "The macros starting 'INCLUDE' allow those components of the real time kernel not utilized by your application to be excluded from your build. This ensures the RTOS does not use any more ROM or RAM than necessary for your particular embedded application."
 
-add_sw_setting boolean system_h_define include.inc_task_delete OS_vTaskDelete 1 "The macros starting 'INCLUDE' allow those components of the real time kernel not utilized by your application to be excluded from your build. This ensures the RTOS does not use any more ROM or RAM than necessary for your particular embedded application."
+add_sw_setting boolean system_h_define include.inc_task_delete OS_VTASKDELETE 1 "The macros starting 'INCLUDE' allow those components of the real time kernel not utilized by your application to be excluded from your build. This ensures the RTOS does not use any more ROM or RAM than necessary for your particular embedded application."
 
-add_sw_setting boolean system_h_define include.inc_task_cleanup_resources OS_vTaskCleanUpResources 0 "The macros starting 'INCLUDE' allow those components of the real time kernel not utilized by your application to be excluded from your build. This ensures the RTOS does not use any more ROM or RAM than necessary for your particular embedded application."
+add_sw_setting boolean system_h_define include.inc_task_cleanup_resources OS_VTASKCLEANUPRESOURCES 0 "The macros starting 'INCLUDE' allow those components of the real time kernel not utilized by your application to be excluded from your build. This ensures the RTOS does not use any more ROM or RAM than necessary for your particular embedded application."
 
-add_sw_setting boolean system_h_define include.inc_task_suspend OS_vTaskSuspend 1 "The macros starting 'INCLUDE' allow those components of the real time kernel not utilized by your application to be excluded from your build. This ensures the RTOS does not use any more ROM or RAM than necessary for your particular embedded application."
+add_sw_setting boolean system_h_define include.inc_task_suspend OS_VTASKSUSPEND 1 "The macros starting 'INCLUDE' allow those components of the real time kernel not utilized by your application to be excluded from your build. This ensures the RTOS does not use any more ROM or RAM than necessary for your particular embedded application."
 
-add_sw_setting boolean system_h_define include.inc_task_delay_util OS_vTaskDelayUntil 1 "The macros starting 'INCLUDE' allow those components of the real time kernel not utilized by your application to be excluded from your build. This ensures the RTOS does not use any more ROM or RAM than necessary for your particular embedded application."
+add_sw_setting boolean system_h_define include.inc_task_delay_util OS_VTASKDELAYUNTIL 1 "The macros starting 'INCLUDE' allow those components of the real time kernel not utilized by your application to be excluded from your build. This ensures the RTOS does not use any more ROM or RAM than necessary for your particular embedded application."
 
-add_sw_setting boolean system_h_define include.inc_task_delay OS_vTaskDelay 1 "The macros starting 'INCLUDE' allow those components of the real time kernel not utilized by your application to be excluded from your build. This ensures the RTOS does not use any more ROM or RAM than necessary for your particular embedded application."
+add_sw_setting boolean system_h_define include.inc_task_delay OS_VTASKDELAY 1 "The macros starting 'INCLUDE' allow those components of the real time kernel not utilized by your application to be excluded from your build. This ensures the RTOS does not use any more ROM or RAM than necessary for your particular embedded application."
 
-add_sw_setting boolean system_h_define include.inc_task_get_stack OS_uxTaskGetStackHighWaterMark 1 "The macros starting 'INCLUDE' allow those components of the real time kernel not utilized by your application to be excluded from your build. This ensures the RTOS does not use any more ROM or RAM than necessary for your particular embedded application."
+add_sw_setting boolean system_h_define include.inc_task_get_stack OS_UXTASKGETSTACKHIGHWATERMARK 1 "The macros starting 'INCLUDE' allow those components of the real time kernel not utilized by your application to be excluded from your build. This ensures the RTOS does not use any more ROM or RAM than necessary for your particular embedded application."
 
 #
 # Low level kernel settings

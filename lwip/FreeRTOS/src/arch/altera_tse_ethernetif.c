@@ -55,6 +55,7 @@
 #include <sys/alt_cache.h>
 
 #include <lwip_main.h>
+#include <portmacro.h>
 
 /* Define those to better describe your network interface. */
 #define IFNAME0 'e'

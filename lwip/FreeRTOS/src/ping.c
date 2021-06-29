@@ -4,7 +4,7 @@
  * This file provides easy access to a ping interface.
  *
  * Created on: 6 jan. 2012
- * 
+ *
  * Created by: Engineering Spirit (c) 2012 http://engineering-spirit.nl/
  */
 
@@ -88,7 +88,7 @@ err_t ping_send(int s, ip_addr_t *addr, u8_t *data, u16_t size) {
 	//to.sin_addr.s_addr = addr->addr;
 
 	// send the packet
-	err = sendto(s, iecho, total_size, 0, (struct sockaddr*)&to, sizeof(to));
+	err = lwip_sendto(s, iecho, total_size, 0, (struct sockaddr*)&to, sizeof(to));
 	if (err < 0)
 		LWIP_DEBUGF(PING_DEBUG, ("Couldn't send ICMP Ping packet!\n"));
 
@@ -108,7 +108,7 @@ int ping_recv(int s)
 	struct icmp_echo_hdr *iecho;
 
 	// remember that there is a one minute timeout on on the receive function ;)
-	while ((len = recvfrom(s, buf, sizeof(buf), 0, (struct sockaddr*)&from, (socklen_t*)&fromlen)) > 0) {
+	while ((len = lwip_recvfrom(s, buf, sizeof(buf), 0, (struct sockaddr*)&from, (socklen_t*)&fromlen)) > 0) {
 		if (len >= (int)(sizeof(struct ip_hdr)+sizeof(struct icmp_echo_hdr))) {
 			ip_addr_t fromaddr;
 
@@ -158,10 +158,10 @@ int lwip_ping_target_data(u32_t addr, u8_t packets, int get_response, u8_t *data
 	int timeout = PING_RCV_TIMEO;
 
 	// open our raw socket
-	if ((s = socket(AF_INET, SOCK_RAW, IP_PROTO_ICMP)) < 0)
+	if ((s = lwip_socket(AF_INET, SOCK_RAW, IP_PROTO_ICMP)) < 0)
 		return -EXIT_SUCCESS;
 
-	if (setsockopt(s, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout)) < 0)
+	if (lwip_setsockopt(s, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout)) < 0)
 		LWIP_DEBUGF(PING_DEBUG, ("Couldn't set ping receive socket timeout\n"));
 
 	while (packets--) {

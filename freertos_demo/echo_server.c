@@ -7,6 +7,7 @@
 #include <task.h>
 #include <semphr.h>
 
+
 #if LWIP_SOCKET == 1
 void prvMySocketTest(__unused void *params)
 {
@@ -38,7 +39,7 @@ void prvMySocketTest(__unused void *params)
 	printf("Listening for socket\n");
 	if (lwip_listen(lSocket, 20) != 0) {
 		perror("listen");
-		close(lSocket);
+		lwip_close(lSocket);
 	    return;
 	}
 
@@ -61,14 +62,14 @@ void prvMySocketTest(__unused void *params)
 
 			}  while (nbytes>0);
 
-			if (!close(clientfd))
+			if (!lwip_close(clientfd))
 				perror("close client");
 		}
 		else
 			perror("accept");
 	}
 
-	if (!close(lSocket))
+	if (!lwip_close(lSocket))
 		perror("close server");
 }
 #endif
