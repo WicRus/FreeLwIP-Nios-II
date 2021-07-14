@@ -87,9 +87,6 @@ add_sw_property include_directory inc
 # Makefile additions
 add_sw_property alt_cppflags_addition "-D__freertos__"
 
-# Register generate-time tcl script for OS_TICKS_PER_SEC definition
-add_sw_property systemh_generation_script freertos_systemh_generation.tcl
-
 #
 # FreeRTOS Settings
 #

@@ -90,12 +90,13 @@ if ! [ `type -t git` ]; then
 	echo "Please install git." 1>&2;
 	exit 1;
 fi;
-
+LWIP_TAG="STABLE-2_1_2_RELEASE"
 # make directories just to be sure
-mkdir -p FreeRTOS_src 2> /dev/null;
-mkdir -p lwip 2> /dev/null;
-if cd FreeRTOS_src/Source; then git pull; cd ../../; else git clone https://github.com/FreeRTOS/FreeRTOS-Kernel.git FreeRTOS_src/Source; fi
-if cd FreeRTOS_src/freertos; then git pull; cd ../../; else git clone https://github.com/FreeRTOS/FreeRTOS.git FreeRTOS_src/freertos; fi
+mkdir -p FreeRTOS_src &> /dev/null;
+mkdir -p lwip &> /dev/null;
+if cd FreeRTOS_src/Source; then git pull; cd ../../; else git clone -q --depth 1 https://github.com/FreeRTOS/FreeRTOS-Kernel.git FreeRTOS_src/Source; fi
+if cd FreeRTOS_src/freertos; then git pull; cd ../../; else git clone -q --depth 1 https://github.com/FreeRTOS/FreeRTOS.git FreeRTOS_src/freertos; fi
+#if cd FreeRTOS_src/$LWIP_TAG; then git pull; cd ../../; else git clone -q --depth 1 --single-branch https://git.savannah.nongnu.org/git/lwip.git -b $LWIP_TAG FreeRTOS_src/$LWIP_TAG; fi
 cp -r ./FreeRTOS_src/freertos/FreeRTOS/Demo ./FreeRTOS_src/
 
 if [ ! -e "FreeRTOS_src" ] || [ ! -e "lwip" ]; then
@@ -103,18 +104,22 @@ if [ ! -e "FreeRTOS_src" ] || [ ! -e "lwip" ]; then
 	echo "Can't find FreeRTOS / LwIP sources! Please download the latest sources and place them in the FreeRTOS_src!" 1>&2;
 fi;
 
+cp -r ./lwip ./FreeRTOS_src/
+#cp -r ./FreeRTOS_src/$LWIP_TAG/src
+#find lwip -name "*.c"
+
 # set some other path
 COMPONENTS="${ALT_PATH}/nios2eds/components";
 EXAMPLES="${ALT_PATH}/nios2eds/examples/software";
 
 # get the right file access rights for Windows 7 machines
 echo " - Silently setting rw POSIX access on the distribution files to avoid access troubles..";
-chmod -Rf u+rw FreeRTOS_src > /dev/null
-chmod -Rf u+rw freertos_demo > /dev/null
-chmod -Rf u+rw nios2_freertos_port > /dev/null
-chmod -Rf u+rw altera_nios2 > /dev/null
-chmod -Rf u+rw freertos > /dev/null
-chmod -Rf u+rw lwip > /dev/null
+chmod -Rf u+rw FreeRTOS_src &> /dev/null
+chmod -Rf u+rw freertos_demo &> /dev/null
+chmod -Rf u+rw nios2_freertos_port &> /dev/null
+chmod -Rf u+rw altera_nios2 &> /dev/null
+chmod -Rf u+rw freertos &> /dev/null
+chmod -Rf u+rw lwip &> /dev/null
 
 echo -e "\n1. Preparing software Nios II Packages!";
 
@@ -162,7 +167,7 @@ else
 fi;
 
 echo -n "    - LwIP......: ";
-if cp -rf "${INST_PATH}/lwip" "${COMPONENTS}"; then
+if cp -rf "${INST_PATH}/FreeRTOS_src/lwip" "${COMPONENTS}"; then
 	echo "Success";
 else
 	echo "Failed with error code: $?";

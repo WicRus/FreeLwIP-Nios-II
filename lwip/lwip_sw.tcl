@@ -10,21 +10,70 @@ create_sw_package lwip
 
 # The version of this software
 # Note: Version assignment is based on version of Nios II EDS that
-#       this was distributed with. The LwIP Stack version is v1.4.1
+#       this was distributed with. The LwIP Stack version is v2.1.2
 set_sw_property version 12.0
 
 # (Don't) initialize the driver in alt_sys_init()
 set_sw_property auto_initialize false
 
 # Location in generated BSP that above sources will be copied into
-set_sw_property bsp_subdirectory LwIP
+set_sw_property bsp_subdirectory lwip
+
+# Include paths
+add_sw_property include_directory inc
+
+# Overriden HAL files
+add_sw_property excluded_hal_source HAL/inc/os/alt_syscall.h
+
+add_sw_property include_source FreeRTOS/inc/os/alt_syscall.h  
+add_sw_property include_source FreeRTOS/inc/lwipopts.h
+
+# This driver supports only FreeRTOS BSP (OS) type
+add_sw_property supported_bsp_type FreeRTOS
+
+# Add preprocessor definitions to public makefile: ALT_LWIP
+add_sw_property alt_cppflags_addition "-DALT_LWIP"
+
+
+# LwIP configuration options
+add_sw_setting boolean system_h_define checksum.enable_generate_ip CONF_LWIP_CHECKSUM_GEN_IP true "Enable generation of checksums for IP frames"
+add_sw_setting boolean system_h_define checksum.enable_generate_udp CONF_LWIP_CHECKSUM_GEN_UDP true "Enable generation of checksums for UDP frames"
+add_sw_setting boolean system_h_define checksum.enable_generate_tcp CONF_LWIP_CHECKSUM_GEN_TCP true "Enable generation of checksums for TCP frames"
+
+add_sw_setting boolean system_h_define checksum.enable_check_ip CONF_LWIP_CHECKSUM_CHECK_IP true "Enable checking of checksums from IP frames"
+add_sw_setting boolean system_h_define checksum.enable_check_udp CONF_LWIP_CHECKSUM_CHECK_UDP true "Enable checking of checksums from UDP frames"
+add_sw_setting boolean system_h_define checksum.enable_check_tcp CONF_LWIP_CHECKSUM_CHECK_TCP true "Enable checking of checksums from TCP frames"
+
+add_sw_setting boolean system_h_define proto.enable_vlan CONF_LWIP_PROTO_VLAN false "Enable VLAN support"
+add_sw_setting boolean system_h_define proto.enable_icmp CONF_LWIP_PROTO_ICMP true "Enable ICMP support"
+add_sw_setting boolean system_h_define proto.enable_autoip CONF_LWIP_PROTO_AUTOIP false "Enable AutoIP support"
+add_sw_setting boolean system_h_define proto.enable_snmp CONF_LWIP_PROTO_SNMP false "Enable SNMP support"
+add_sw_setting boolean system_h_define proto.enable_igmp CONF_LWIP_PROTO_IGMP true "Enable IGMP support"
+add_sw_setting boolean system_h_define proto.enable_dns CONF_LWIP_PROTO_DNS true "Enable DNS support"
+add_sw_setting boolean system_h_define proto.enable_udp CONF_LWIP_PROTO_UDP true "Enable UDP support"
+add_sw_setting boolean system_h_define proto.enable_tcp CONF_LWIP_PROTO_TCP true "Enable TCP support"
+add_sw_setting boolean system_h_define proto.enable_dhcp CONF_LWIP_PROTO_DHCP true "Enable DHCP support"
+
+add_sw_setting decimal_number system_h_define connections.raw_pcb_count CONF_LWIP_RAW_PCB 2 "Number of raw sockets supported (Used by ICMP for example)"
+add_sw_setting decimal_number system_h_define connections.udp_pcb_count CONF_LWIP_UDP_PCB 4 "Number of UDP sockets supported"
+add_sw_setting decimal_number system_h_define connections.tcp_pcb_count CONF_LWIP_TCP_PCB 4 "Number of TCP sockets supported"
+add_sw_setting decimal_number system_h_define connections.tcp_listen_pcb_count CONF_LWIP_TCP_PCB_LISTEN 8 "Number of TCP Listening sockets supported"
+
+add_sw_setting decimal_number system_h_define memory.mem_size CONF_LWIP_MEM_SIZE 32768 "Size of the memory poll"
+add_sw_setting boolean system_h_define memory.overflow_check CONF_LWIP_OVERFLOW_CHECK false "Do memory overflow checking"
+add_sw_setting decimal_number system_h_define memory.pbuf_count CONF_LWIP_PBUF_COUNT 32 "Number of packet buffers supported"
+
+add_sw_setting boolean system_h_define loopback CONF_LWIP_LOOPBACK false "Loopback outgoing traffic to our selfs"
+add_sw_setting boolean system_h_define loopback_if CONF_LWIP_LOOPBACKIF false "Create a loopback interface 'lo'"
+add_sw_setting boolean system_h_define stats CONF_LWIP_STATS true "Keep track of the LwIP traffic statistics"
+add_sw_setting boolean system_h_define ip_forward CONF_LWIP_IP_FORWARD false "Keep track of the LwIP traffic statistics"
+add_sw_setting decimal_number system_h_define ttl CONF_LWIP_DEFAULT_TTL 64 "The default TTL (Time To Life) set to a packet"
 
 #
 # Source file listings...
 #
 
 # C/C++ source files
-add_sw_property c_source FreeRTOS/src/ping.c
 add_sw_property c_source FreeRTOS/src/api/api_lib.c
 add_sw_property c_source FreeRTOS/src/api/api_msg.c
 add_sw_property c_source FreeRTOS/src/api/err.c
@@ -34,16 +83,10 @@ add_sw_property c_source FreeRTOS/src/api/netdb.c
 add_sw_property c_source FreeRTOS/src/api/netifapi.c
 add_sw_property c_source FreeRTOS/src/api/sockets.c
 add_sw_property c_source FreeRTOS/src/api/tcpip.c
-add_sw_property c_source FreeRTOS/src/arch/altera_tse_ethernetif.c
-add_sw_property c_source FreeRTOS/src/arch/altera_avalon_tse.c
-add_sw_property c_source FreeRTOS/src/arch/altera_avalon_tse_system_info.c
 add_sw_property c_source FreeRTOS/src/arch/alt_lwip_close.c
 add_sw_property c_source FreeRTOS/src/arch/alt_lwip_fcntl.c
 add_sw_property c_source FreeRTOS/src/arch/alt_lwip_read.c
 add_sw_property c_source FreeRTOS/src/arch/alt_lwip_write.c
-add_sw_property c_source FreeRTOS/src/arch/lwip_main.c
-add_sw_property c_source FreeRTOS/src/arch/lwip_tse_mac.c
-add_sw_property c_source FreeRTOS/src/arch/sys_arch.c
 add_sw_property c_source FreeRTOS/src/core/ipv4/acd.c
 add_sw_property c_source FreeRTOS/src/core/ipv4/autoip.c
 add_sw_property c_source FreeRTOS/src/core/ipv4/dhcp.c
@@ -126,13 +169,6 @@ add_sw_property c_source FreeRTOS/src/netif/ppp/polarssl/md5.c
 add_sw_property c_source FreeRTOS/src/netif/ppp/polarssl/sha1.c
 
 # Include files
-add_sw_property include_source FreeRTOS/inc/altera_avalon_tse.h
-add_sw_property include_source FreeRTOS/inc/altera_avalon_tse_system_info.h
-add_sw_property include_source FreeRTOS/inc/ping.h
-add_sw_property include_source FreeRTOS/inc/altera_tse_ethernetif.h
-add_sw_property include_source FreeRTOS/inc/lwipopts.h
-add_sw_property include_source FreeRTOS/inc/lwip_main.h
-add_sw_property include_source FreeRTOS/inc/triple_speed_ethernet_regs.h
 
 add_sw_property include_source FreeRTOS/inc/arch/cc.h
 add_sw_property include_source FreeRTOS/inc/arch/perf.h
@@ -266,59 +302,3 @@ add_sw_property include_source FreeRTOS/inc/netif/ppp/pppos.h
 add_sw_property include_source FreeRTOS/inc/netif/ppp/randm.h
 add_sw_property include_source FreeRTOS/inc/netif/ppp/upap.h
 add_sw_property include_source FreeRTOS/inc/netif/ppp/vj.h
-
-add_sw_property include_source FreeRTOS/inc/os/alt_syscall.h
-
-
-# Include paths
-add_sw_property include_directory inc
-
-# Overriden HAL files
-add_sw_property excluded_hal_source HAL/inc/os/alt_syscall.h
-add_sw_property excluded_hal_source drivers/inc/altera_avalon_tse.h
-add_sw_property excluded_hal_source drivers/src/altera_avalon_tse.c
-add_sw_property excluded_hal_source drivers/inc/altera_avalon_tse_system_info.h
-add_sw_property excluded_hal_source drivers/src/altera_avalon_tse_system_info.c
-
-# This driver supports only FreeRTOS BSP (OS) type
-add_sw_property supported_bsp_type FreeRTOS
-
-# Add preprocessor definitions to public makefile: ALT_LWIP
-add_sw_property alt_cppflags_addition "-DALT_LWIP"
-
-
-# LwIP configuration options
-add_sw_setting boolean system_h_define checksum.enable_generate_ip CONF_LWIP_CHECKSUM_GEN_IP true "Enable generation of checksums for IP frames"
-add_sw_setting boolean system_h_define checksum.enable_generate_udp CONF_LWIP_CHECKSUM_GEN_UDP true "Enable generation of checksums for UDP frames"
-add_sw_setting boolean system_h_define checksum.enable_generate_tcp CONF_LWIP_CHECKSUM_GEN_TCP true "Enable generation of checksums for TCP frames"
-
-add_sw_setting boolean system_h_define checksum.enable_check_ip CONF_LWIP_CHECKSUM_CHECK_IP true "Enable checking of checksums from IP frames"
-add_sw_setting boolean system_h_define checksum.enable_check_udp CONF_LWIP_CHECKSUM_CHECK_UDP true "Enable checking of checksums from UDP frames"
-add_sw_setting boolean system_h_define checksum.enable_check_tcp CONF_LWIP_CHECKSUM_CHECK_TCP true "Enable checking of checksums from TCP frames"
-
-add_sw_setting boolean system_h_define proto.enable_vlan CONF_LWIP_PROTO_VLAN false "Enable VLAN support"
-add_sw_setting boolean system_h_define proto.enable_icmp CONF_LWIP_PROTO_ICMP true "Enable ICMP support"
-add_sw_setting boolean system_h_define proto.enable_autoip CONF_LWIP_PROTO_AUTOIP false "Enable AutoIP support"
-add_sw_setting boolean system_h_define proto.enable_snmp CONF_LWIP_PROTO_SNMP false "Enable SNMP support"
-add_sw_setting boolean system_h_define proto.enable_igmp CONF_LWIP_PROTO_IGMP true "Enable IGMP support"
-add_sw_setting boolean system_h_define proto.enable_dns CONF_LWIP_PROTO_DNS true "Enable DNS support"
-add_sw_setting boolean system_h_define proto.enable_udp CONF_LWIP_PROTO_UDP true "Enable UDP support"
-add_sw_setting boolean system_h_define proto.enable_tcp CONF_LWIP_PROTO_TCP true "Enable TCP support"
-add_sw_setting boolean system_h_define proto.enable_dhcp CONF_LWIP_PROTO_DHCP true "Enable DHCP support"
-
-add_sw_setting decimal_number system_h_define connections.raw_pcb_count CONF_LWIP_RAW_PCB 2 "Number of raw sockets supported (Used by ICMP for example)"
-add_sw_setting decimal_number system_h_define connections.udp_pcb_count CONF_LWIP_UDP_PCB 4 "Number of UDP sockets supported"
-add_sw_setting decimal_number system_h_define connections.tcp_pcb_count CONF_LWIP_TCP_PCB 4 "Number of TCP sockets supported"
-add_sw_setting decimal_number system_h_define connections.tcp_listen_pcb_count CONF_LWIP_TCP_PCB_LISTEN 8 "Number of TCP Listening sockets supported"
-
-add_sw_setting decimal_number system_h_define memory.mem_size CONF_LWIP_MEM_SIZE 32768 "Size of the memory poll"
-add_sw_setting boolean system_h_define memory.overflow_check CONF_LWIP_OVERFLOW_CHECK false "Do memory overflow checking"
-add_sw_setting decimal_number system_h_define memory.pbuf_count CONF_LWIP_PBUF_COUNT 32 "Number of packet buffers supported"
-
-add_sw_setting boolean system_h_define loopback CONF_LWIP_LOOPBACK false "Loopback outgoing traffic to our selfs"
-add_sw_setting boolean system_h_define loopback_if CONF_LWIP_LOOPBACKIF false "Create a loopback interface 'lo'"
-add_sw_setting boolean system_h_define stats CONF_LWIP_STATS true "Keep track of the LwIP traffic statistics"
-add_sw_setting boolean system_h_define ip_forward CONF_LWIP_IP_FORWARD false "Keep track of the LwIP traffic statistics"
-add_sw_setting decimal_number system_h_define ttl CONF_LWIP_DEFAULT_TTL 64 "The default TTL (Time To Life) set to a packet"
-
-# End of file
