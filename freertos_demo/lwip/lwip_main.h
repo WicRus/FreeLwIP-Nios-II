@@ -30,7 +30,7 @@ extern "C" {
 
 #include <arch/cc.h>
 #include <lwip/netif.h>
-#include <altera_tse_ethernetif.h>
+#include "lwip_tse_ethernetif.h"
 
 #define ETH_IFACE_NAME_LENGTH		2
 

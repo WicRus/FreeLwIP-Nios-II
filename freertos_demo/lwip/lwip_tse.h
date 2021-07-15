@@ -28,8 +28,8 @@
 *                                                                             *
 ******************************************************************************/
 
-#ifndef __ALTERA_AVALON_TSE_H__
-#define __ALTERA_AVALON_TSE_H__
+#ifndef __LWIP_TSE_H__
+#define __LWIP_TSE_H__
 
 #define ALT_DEBUG
 
@@ -1041,5 +1041,5 @@ alt_u32 KSZ9031RNX_config(np_tse_mac *pmac);
 }
 #endif /* __cplusplus */
 
-#endif /* __ALTERA_AVALON_TSE_H__ */
+#endif /* __LWIP_TSE_H__ */
 

@@ -11,19 +11,19 @@ extern "C"
 #include <lwip/sockets.h>
 #include <lwip/stats.h>
 #include <netif/etharp.h>
-#include <ping.h>
+#include "ping.h"
 #include <math.h>
 #include <unistd.h>
                     
-#include "FreeRTOS.h"
-#include "task.h"
+#include <FreeRTOS.h>
+#include <task.h>
 
 #include "BasicWEB.h"
 
 // include low-level network support
-#include <altera_eth_tse_regs.h>
-#include <altera_tse_ethernetif.h>
-#include <altera_avalon_tse.h>
+#include "lwip_eth_tse_regs.h"
+#include "lwip_tse_ethernetif.h"
+#include "lwip_tse.h"
 
 
 #define mssleep(ms)						vTaskDelay((TickType_t)(ms))

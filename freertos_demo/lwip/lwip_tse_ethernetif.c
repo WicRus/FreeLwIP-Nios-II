@@ -49,7 +49,7 @@
 #include <lwip/snmp.h>
 #include <netif/etharp.h>
 #include <netif/ppp/pppoe.h>
-#include "altera_tse_ethernetif.h"
+#include "lwip_tse_ethernetif.h"
 
 #include <sys/alt_irq.h>
 #include <sys/alt_cache.h>

@@ -36,24 +36,22 @@
 #include <string.h>
 #include <unistd.h>
 #include <io.h>
-#include "system.h"
-#include "alt_types.h"
+#include <system.h>
+#include <alt_types.h>
+#include <sys/alt_irq.h>
+#include <sys/alt_cache.h>
 
-#include "altera_avalon_tse.h"
+#include "lwip_tse_ethernetif.h"
+#include "lwip_tse.h"
+#include <altera_avalon_sgdma_regs.h>
+#include <altera_avalon_sgdma.h>
+#include <altera_avalon_sgdma_descriptor.h>
 
-#include "sys/alt_irq.h"
-#include "sys/alt_cache.h"
-
-#include "altera_tse_ethernetif.h"
-#include "altera_avalon_sgdma_regs.h"
-#include "altera_avalon_sgdma.h"
-#include "altera_avalon_sgdma_descriptor.h"
-
-#include "netif/etharp.h"
-#include "lwip/stats.h"
-#include "lwip/err.h"
-#include "lwip/sys.h"
-#include "arch/sys_arch.h"
+#include <netif/etharp.h>
+#include <lwip/stats.h>
+#include <lwip/err.h>
+#include <lwip/sys.h>
+#include "sys_arch.h"
 
 // include FreeRTOS headers
 #include <FreeRTOS.h>

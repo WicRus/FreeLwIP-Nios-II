@@ -28,8 +28,8 @@
 *                                                                             *
 ******************************************************************************/
 
-#ifndef __TRIPLE_SPEED_ETHERNET_REGS_H__
-#define __TRIPLE_SPEED_ETHERNET_REGS_H__
+#ifndef __LWIP_TSE_REGS_H__
+#define __LWIP_TSE_REGS_H__
 
 
 #include "alt_types.h"
@@ -732,4 +732,4 @@ typedef volatile struct np_tse_mac_struct
 
 } np_tse_mac;
 
-#endif /* __TRIPLE_SPEED_ETHERNET_REGS_H__ */
+#endif /* __TLWIP_TSE_REGS_H__ */

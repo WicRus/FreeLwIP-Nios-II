@@ -28,7 +28,7 @@
 *                                                                             *
 ******************************************************************************/
 
-#include "altera_avalon_tse.h"
+#include "lwip_tse.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

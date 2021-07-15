@@ -1,5 +1,5 @@
-#ifndef ALTERATSEETHERNETIF_H_
-#define ALTERATSEETHERNETIF_H_
+#ifndef _LWIP_TSE_ETHERNETIF_H_
+#define _LWIP_TSE_ETHERNETIF_H_
 
 #include <lwip/netif.h>
 #include <lwip/err.h>
@@ -7,7 +7,7 @@
 
 #include <stdint.h>
 
-#include <altera_avalon_tse.h>
+#include <lwip_tse.h>
 
 #define PHY_COUNT 1
 
@@ -71,4 +71,4 @@ extern lwip_tse_info tse[PHY_COUNT];
 err_t ethernetif_init(struct netif *netif);
 int ethernetif_input(struct netif *netif);
 
-#endif /*ALTERATSEETHERNETIF_H_*/
+#endif /*_LWIP_TSE_ETHERNETIF_H_ */
