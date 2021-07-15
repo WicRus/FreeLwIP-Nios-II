@@ -24,7 +24,8 @@
 	</stf>
 	<create-this>
 		<app 	name="freertos_demo"
-			nios2-app-generate-makefile-args=" --set OBJDUMP_INCLUDE_SOURCE 1 --src-files main.c echo_server.c ethernet.c BasicWEB.c BlockQ.c blocktim.c countsem.c  death.c dynamic.c GenQTest.c  integer.c PollQ.c QPeek.c recmutex.c semtest.c"
+			nios2-app-generate-makefile-args=" --set OBJDUMP_INCLUDE_SOURCE 1
+--src-dir . --inc-dir ."
 			bsp="freertos_net">
 		</app>
 		<bsp name="freertos_net" 

@@ -33,7 +33,7 @@
 
 #define ALT_DEBUG
 
-#include "triple_speed_ethernet_regs.h"
+#include <altera_eth_tse_regs.h>
 #include "system.h"     /* check if SGDMA is used */
 
 #ifdef __cplusplus
@@ -315,7 +315,12 @@ enum {
     DP83848C_REV       = 0x0
 };
 
-                                     
+
+enum {
+    KSZ9031RNX_OUI       = 0x885,
+    KSZ9031RNX_MODEL     = 0x22,
+    KSZ9031RNX_REV       = 0x2
+};
       
                                                                   
                                                
@@ -1023,7 +1028,9 @@ alt_32 marvell_cfg_rgmii(np_tse_mac *pmac);
  */
 alt_u32 DP83848C_link_status_read(np_tse_mac *pmac);
 
-                                                                                       
+
+alt_u32 KSZ9031RNX_link_status_read(np_tse_mac *pmac);
+alt_u32 KSZ9031RNX_config(np_tse_mac *pmac);
                         
                                                                                             
    

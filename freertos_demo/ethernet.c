@@ -14,17 +14,19 @@ extern "C"
 #include <ping.h>
 #include <math.h>
 #include <unistd.h>
+                    
+#include "FreeRTOS.h"
+#include "task.h"
 
 #include "BasicWEB.h"
 
 // include low-level network support
-#include <triple_speed_ethernet_regs.h>
+#include <altera_eth_tse_regs.h>
 #include <altera_tse_ethernetif.h>
 #include <altera_avalon_tse.h>
 
-#include "BasicWEB.h"
 
-#define mssleep(x)						usleep((x) * 1000)
+#define mssleep(ms)						vTaskDelay((TickType_t)(ms))
 
 #define MDIO_IFACE						mdio1
 
@@ -93,7 +95,7 @@ static int WaitOnPHY(void)
 
 		// we are using a Lantiq PHY
 		for (phyadd = 0x00; phyadd < 0xff; phyadd++) {
-			IOWR(&pmac->MDIO_ADDR0, 0, phyadd);
+			IOWR(&pmac->MDIO_ADDR1, 0, phyadd);
 
 			phyid = IORD(&pmac->MDIO_IFACE.PHY_ID1, 0);
 			phyid2 = IORD(&pmac->MDIO_IFACE.PHY_ID2, 0);
@@ -140,7 +142,7 @@ static int WaitOnPHY(void)
 void xEthernetRun(__unused void* param)
 {
 	// initialize PHY
-	WaitOnPHY();
+	//WaitOnPHY();
 
 	if (InitNetwork() != EXIT_SUCCESS) {
 		// the network initialization has failed.
@@ -155,7 +157,7 @@ void xEthernetRun(__unused void* param)
 	// int nDisconnectCnt = 0;
 
 	// start the demo network tasks
-	sys_thread_new("TCP Echo Server", prvMySocketTest, NULL, KB(4), 3);
+	sys_thread_new("TCP Echo Server", prvMySocketTest, NULL, KB(8), 3);
 	sys_thread_new("HTTP Server", vBasicWEBServer, NULL, KB(8), 3);
 
 	// keep checking our network status, are we connected or disconnected?
@@ -227,7 +229,7 @@ int get_ip_addr(int iface, ip_addr_t* ipaddr, ip_addr_t* netmask, ip_addr_t* gw,
 	IP4_ADDR(ipaddr, 192, 168, 0, 218);
 	IP4_ADDR(netmask, 255, 255, 255, 0);
 	IP4_ADDR(gw, 192, 168, 0, 1);
-	*use_dhcp = 1;
+	*use_dhcp = 0;
 
 	if (*use_dhcp == 0) {
 		char buf[255];

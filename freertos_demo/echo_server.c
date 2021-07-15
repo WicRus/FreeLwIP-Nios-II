@@ -6,6 +6,7 @@
 #include <FreeRTOS.h>
 #include <task.h>
 #include <semphr.h>
+#include "lwip_main.h"
 
 
 #if LWIP_SOCKET == 1
@@ -53,7 +54,8 @@ void prvMySocketTest(__unused void *params)
 		printf("Waiting for new client\n");
 
 		clientfd = lwip_accept(lSocket, (struct sockaddr*)&client_addr, (socklen_t*)&addrlen);
-		printf("client socket %d connected from %s\n", clientfd, print_ipad(client_addr.sin_addr.s_addr));
+         	print_ipad(client_addr.sin_addr.s_addr, buffer);
+		printf("client socket %d connected from %s\n", clientfd, buffer);
 		if (clientfd > 0) {
 			do {
 				nbytes = lwip_read(clientfd, buffer, sizeof(buffer));

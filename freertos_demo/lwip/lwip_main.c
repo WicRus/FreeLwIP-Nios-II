@@ -278,7 +278,7 @@ void lwip_handle_interfaces(__unused void *params)
 			netif_set_link_callback(eth, link_callback);
 
 		// Initialize Altera TSE in a loop if waiting for a link
-		printf("Waiting for link... ");
+		printf("Waiting for link... \n");
 		if (lwip_wait_for_an(idx, eth->state) < 0) {
 			printf("FAILED\n");
 			continue;

@@ -43,7 +43,6 @@ add_sw_property c_source FreeRTOS/src/port.c
 add_sw_property c_source FreeRTOS/src/queue.c
 add_sw_property c_source FreeRTOS/src/tasks.c
 add_sw_property c_source FreeRTOS/src/timers.c
-add_sw_property c_source FreeRTOS/src/tse_ethernet_phys.c
 
 # ASM source files
 add_sw_property asm_source FreeRTOS/src/port_asm.S

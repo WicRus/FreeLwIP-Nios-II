@@ -173,30 +173,30 @@ int main( void )
 {
 	/* Create all the other standard demo tasks.  These serve no purpose other
     than to test the port and demonstrate the use of the FreeRTOS API. */
-	vStartIntegerMathTasks( mainGENERIC_QUEUE_PRIORITY );
-	vStartPolledQueueTasks( mainQUEUE_POLL_PRIORITY );
-	vStartBlockingQueueTasks( mainQUEUE_BLOCK_PRIORITY );
-	vCreateBlockTimeTasks();
-	vStartSemaphoreTasks( mainSEMAPHORE_TASK_PRIORITY );
-	vStartDynamicPriorityTasks();
-	vStartQueuePeekTasks();
-	vStartGenericQueueTasks( mainGENERIC_QUEUE_PRIORITY );
-	vStartCountingSemaphoreTasks();
-	vStartRecursiveMutexTasks();
-
-	/* prvCheckTask uses sprintf so requires more stack. */
-	xTaskCreate( prvCheckTask, "Check", configMINIMAL_STACK_SIZE, NULL, mainCHECK_TASK_PRIORITY, NULL );
-
-    /* The RegTest tasks as described at the top of this file. */
-    xTaskCreate( prvFirstRegTestTask, "Rreg1", configMINIMAL_STACK_SIZE, mainREG_TEST_1_PARAMETER, mainREG_TEST_PRIORITY, NULL );
-    xTaskCreate( prvSecondRegTestTask, "Rreg2", configMINIMAL_STACK_SIZE, mainREG_TEST_2_PARAMETER, mainREG_TEST_PRIORITY, NULL );
+//	vStartIntegerMathTasks( mainGENERIC_QUEUE_PRIORITY );
+//	vStartPolledQueueTasks( mainQUEUE_POLL_PRIORITY );
+//	vStartBlockingQueueTasks( mainQUEUE_BLOCK_PRIORITY );
+//	vCreateBlockTimeTasks();
+//	vStartSemaphoreTasks( mainSEMAPHORE_TASK_PRIORITY );
+//	vStartDynamicPriorityTasks();
+//	vStartQueuePeekTasks();
+//	vStartGenericQueueTasks( mainGENERIC_QUEUE_PRIORITY );
+//	vStartCountingSemaphoreTasks();
+//	vStartRecursiveMutexTasks();
+//
+//	/* prvCheckTask uses sprintf so requires more stack. */
+//	xTaskCreate( prvCheckTask, "Check", configMINIMAL_STACK_SIZE, NULL, mainCHECK_TASK_PRIORITY, NULL );
+//
+//    /* The RegTest tasks as described at the top of this file. */
+//    xTaskCreate( prvFirstRegTestTask, "Rreg1", configMINIMAL_STACK_SIZE, mainREG_TEST_1_PARAMETER, mainREG_TEST_PRIORITY, NULL );
+//    xTaskCreate( prvSecondRegTestTask, "Rreg2", configMINIMAL_STACK_SIZE, mainREG_TEST_2_PARAMETER, mainREG_TEST_PRIORITY, NULL );
 
 	/* start the network task to start the network */
 	xTaskCreate( xEthernetRun, "eth0", KB(4), NULL, mainQUEUE_POLL_PRIORITY, NULL);
 
 	/* This task has to be created last as it keeps account of the number of tasks
 	it expects to see running. */
-	vCreateSuicidalTasks( mainCREATOR_TASK_PRIORITY );
+	//vCreateSuicidalTasks( mainCREATOR_TASK_PRIORITY );
 
     /* Finally start the scheduler. */
 	vTaskStartScheduler();

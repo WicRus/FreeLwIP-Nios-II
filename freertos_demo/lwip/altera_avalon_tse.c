@@ -1035,10 +1035,23 @@ alt_32 alt_tse_phy_add_profile_default() {
                           };
                       
     /* add supported PHY to profile */                          
+    alt_tse_phy_profile KSZ9031RNX = {"Microchip KSZ9031RNX",  /*                                            */
+                           KSZ9031RNX_OUI,                   /* OUI                                                        */
+                           KSZ9031RNX_MODEL,                 /* Vender Model Number                                        */
+                           KSZ9031RNX_REV,                   /* Model Revision Number                                      */
+                           0,                              /* Location of Status Register (ignored)                      */
+                           0,                              /* Location of Speed Status    (ignored)                      */
+                           0,                              /* Location of Duplex Status   (ignored)                      */
+                           0,                              /* Location of Link Status     (ignored)                      */
+                           &KSZ9031RNX_config,                 /* No function pointer configure              */
+						   &KSZ9031RNX_link_status_read      /* Function pointer to read from PHY specific status register */
+                          };
+    /* add supported PHY to profile */
     alt_tse_phy_add_profile(&MV88E1111);
     alt_tse_phy_add_profile(&MV88E1145);
     alt_tse_phy_add_profile(&DP83865);
     alt_tse_phy_add_profile(&DP83848C);
+    alt_tse_phy_add_profile(&KSZ9031RNX);
     
     
     return phy_profile_count;
@@ -1634,7 +1647,7 @@ alt_32 alt_tse_phy_check_link(alt_tse_phy_info *pphy, alt_u32 timeout_threshold)
      */
     tse_dprintf(5, "INFO    : PHY[%d.%d] - Checking link...\n", mac_group_index, mac_info_index);
     if( ((alt_tse_phy_rd_mdio_reg(pphy, TSE_PHY_MDIO_CONTROL, TSE_PHY_MDIO_CONTROL_LOOPBACK, 1)) != 0) ||
-        ((alt_tse_phy_rd_mdio_reg(pphy, TSE_PHY_MDIO_STATUS, TSE_PHY_MDIO_STATUS_AN_COMPLETE, 1)) == 0) ) {                 
+        ((alt_tse_phy_rd_mdio_reg(pphy, TSE_PHY_MDIO_STATUS, TSE_PHY_MDIO_STATUS_LINK_STATUS, 1)) == 0) ) {
         
         tse_dprintf(5, "INFO    : PHY[%d.%d] - Link not yet established, restart auto-negotiation...\n", mac_group_index, mac_info_index);
         /* restart Auto-Negotiation */
@@ -2228,7 +2241,7 @@ alt_32 marvell_cfg_sgmii(np_tse_mac *pmac) {
  * @param pmac  Pointer to the first TSE MAC Control Interface Base address within MAC group
  */
 alt_32 marvell_cfg_rgmii(np_tse_mac *pmac) {
-    
+
 	alt_u16 dat = IORD(&pmac->mdio1.reg1b, 0);
     dat &= 0xfff0;
     
@@ -2244,7 +2257,7 @@ alt_32 marvell_cfg_rgmii(np_tse_mac *pmac) {
     tse_dprintf(5, "MARVELL : PHY reset\n");
     dat = IORD(&pmac->mdio1.CONTROL, 0); 
     IOWR(&pmac->mdio1.CONTROL, 0, dat | 1<<15);
-    
+
     return 1;
     
 }
@@ -2272,4 +2285,56 @@ alt_u32 DP83848C_link_status_read(np_tse_mac *pmac) {
 	}
 	
 	return link_status;
+}
+
+alt_u32 KSZ9031RNX_link_status_read(np_tse_mac *pmac) {
+	alt_u32 link_status = 0;
+	alt_u32 reg_status = IORD(&pmac->mdio1.reg1f, 0);
+
+	/* If speed == 10 Mbps */
+	if ( reg_status & ( 1 << 4 ) ) {
+		link_status |= 0x8;
+	}
+	/* Else speed = 100 Mbps */
+	else if ( reg_status & ( 1 << 5 ) )
+		link_status |= 0x4;
+	else if ( reg_status & ( 1 << 6 ) )
+		link_status |= 0x2;
+
+	/* If duplex == Full */
+	if(reg_status &  ( 1 << 3 )) {
+		link_status |= 0x1;
+	}
+//	((alt_tse_phy_rd_mdio_reg(pphy, TSE_PHY_MDIO_CONTROL, TSE_PHY_MDIO_CONTROL_LOOPBACK, 1)) != 0) ||
+//	        ((alt_tse_phy_rd_mdio_reg(pphy, TSE_PHY_MDIO_STATUS, TSE_PHY_MDIO_STATUS_AN_COMPLETE, 1)) == 0)
+    tse_dprintf(1, "INFO  link UP -1\n");
+
+    tse_dprintf(1, "INFO  link status 0x%x\n", (IORD(&pmac->mdio1.STATUS, 0)) );
+	while ((IORD(&pmac->mdio1.STATUS, 0) & PCS_ST_rx_sync) == 0)
+				usleep(10000);
+
+
+    tse_dprintf(1, "INFO  link UP 1\n");
+	return link_status;
+}
+
+alt_u32 KSZ9031RNX_config(np_tse_mac *pmac) {
+
+	alt_u32 reg_status = IORD(&pmac->mdio1.CONTROL, 0);
+	reg_status = reg_status | ( 1 << 13 );
+	reg_status = reg_status & ~( 1 << 6 );
+	reg_status = reg_status & ~( 1 << 12 );
+
+	IOWR(&pmac->mdio1.CONTROL, 0, reg_status);
+	reg_status = 0x0;
+
+	IOWR(&pmac->mdio1.reg1c, 0, reg_status);
+
+//	reg_status = IORD(&pmac->mdio1.CONTROL, 0);
+//    IOWR(&pmac->mdio1.CONTROL, 0, reg_status | PCS_CTL_sw_reset);
+	while ((IORD(&pmac->mdio1.STATUS, 0) & PCS_ST_rx_sync) == 0)
+				usleep(10000);
+    tse_dprintf(1, "KSZ9031RNX config \n");
+
+	return 1;
 }
