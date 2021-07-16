@@ -31,7 +31,7 @@
 #ifndef __TSE_SYSTEM_INFO_H__
 #define __TSE_SYSTEM_INFO_H__
 
-#include "tse.h"
+#include "lwip_tse.h"
 
 #ifdef __cplusplus
 extern "C"

@@ -14,11 +14,8 @@
 //  This times PBUF_POOL_BUFSIZE+4 is the amount of memory used to buffer incoming packets.
 //  This can be small if you dedicate sufficient time to process incoming packets.
 //  If it's too small, lwIP will run - only incoming packets will be dropped.
-#define LWIP_RX_ETH_BUFFER  				12
+#define LWIP_RX_ETH_BUFFER  				300
 #define LWIP_RECEIVE_SEMAPHORE				1
-
-struct ethernetif;
-int tse_mac_init(int iface, struct ethernetif *ethernetif);
 
 /**
  * Private data used to operate your ethernet interface.

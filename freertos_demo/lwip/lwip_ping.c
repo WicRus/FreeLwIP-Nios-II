@@ -8,8 +8,6 @@
  * Created by: Engineering Spirit (c) 2012 http://engineering-spirit.nl/
  */
 
-#include "ping.h"
-
 #include <lwip/opt.h>
 #include <lwip/raw.h>
 #include <lwip/icmp.h>
@@ -24,6 +22,8 @@
 #include <sys/time.h>
 
 #include <unistd.h>
+
+#include "lwip_ping.h"
 
 /**
  * PING_DEBUG: Enable debugging for PING.

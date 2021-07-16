@@ -80,9 +80,9 @@
 #include <string.h>
 
 /* Scheduler includes. */
-#include "FreeRTOS.h"
-#include "task.h"
-#include "queue.h"
+#include <FreeRTOS.h>
+#include <task.h>
+#include <queue.h>
 
 /* Demo application includes. */
 #include "partest.h"
@@ -103,6 +103,8 @@
 
 /*-----------------------------------------------------------*/
 
+#define FREERTOS_DEMOS_TASKS    0
+
 /* The rate at which the LED controlled by the 'check' task will toggle when no
 errors have been detected. */
 #define mainNO_ERROR_PERIOD	( 5000 )
@@ -120,17 +122,10 @@ error has been detected. */
 #define mainCOM_TEST_PRIORITY		( tskIDLE_PRIORITY + 2 )
 #define mainSEMAPHORE_TASK_PRIORITY	( tskIDLE_PRIORITY + 1 )
 #define mainGENERIC_QUEUE_PRIORITY	( tskIDLE_PRIORITY )
-#define mainREG_TEST_PRIORITY       ( tskIDLE_PRIORITY )
+#define mainREG_TEST_PRIORITY           ( tskIDLE_PRIORITY )
 
 /* Misc. */
 #define mainDONT_WAIT						( 0 )
-
-/* The parameters passed to the reg test tasks.  This is just done to check
-the parameter passing mechanism is working correctly. */
-#define mainREG_TEST_1_PARAMETER    ( ( void * ) 0x12345678 )
-#define mainREG_TEST_2_PARAMETER    ( ( void * ) 0x87654321 )
-
-/*-----------------------------------------------------------*/
 
 #ifdef __cplusplus
 extern "C" {
@@ -147,70 +142,10 @@ extern void prvMySocketTest(void *params);
 }
 #endif
 
-/*
- * Execute all of the check functions to ensure the tests haven't failed.
- */
-static void prvCheckTask( void *pvParameters );
-
-/*
- * The register test (or RegTest) tasks as described at the top of this file.
- */
-static void prvFirstRegTestTask( void *pvParameters );
-static void prvSecondRegTestTask( void *pvParameters );
-
-/*-----------------------------------------------------------*/
-
-/* Counters that are incremented on each iteration of the RegTest tasks
-so long as no errors have been detected. */
-volatile unsigned long ulRegTest1Counter = 0UL, ulRegTest2Counter = 0UL;
-
-/*-----------------------------------------------------------*/
-
-/*
- * Create the demo tasks then start the scheduler.
- */
-int main( void )
-{
-	/* Create all the other standard demo tasks.  These serve no purpose other
-    than to test the port and demonstrate the use of the FreeRTOS API. */
-//	vStartIntegerMathTasks( mainGENERIC_QUEUE_PRIORITY );
-//	vStartPolledQueueTasks( mainQUEUE_POLL_PRIORITY );
-//	vStartBlockingQueueTasks( mainQUEUE_BLOCK_PRIORITY );
-//	vCreateBlockTimeTasks();
-//	vStartSemaphoreTasks( mainSEMAPHORE_TASK_PRIORITY );
-//	vStartDynamicPriorityTasks();
-//	vStartQueuePeekTasks();
-//	vStartGenericQueueTasks( mainGENERIC_QUEUE_PRIORITY );
-//	vStartCountingSemaphoreTasks();
-//	vStartRecursiveMutexTasks();
-//
-//	/* prvCheckTask uses sprintf so requires more stack. */
-//	xTaskCreate( prvCheckTask, "Check", configMINIMAL_STACK_SIZE, NULL, mainCHECK_TASK_PRIORITY, NULL );
-//
-//    /* The RegTest tasks as described at the top of this file. */
-//    xTaskCreate( prvFirstRegTestTask, "Rreg1", configMINIMAL_STACK_SIZE, mainREG_TEST_1_PARAMETER, mainREG_TEST_PRIORITY, NULL );
-//    xTaskCreate( prvSecondRegTestTask, "Rreg2", configMINIMAL_STACK_SIZE, mainREG_TEST_2_PARAMETER, mainREG_TEST_PRIORITY, NULL );
-
-	/* start the network task to start the network */
-	xTaskCreate( xEthernetRun, "eth0", KB(4), NULL, mainQUEUE_POLL_PRIORITY, NULL);
-
-	/* This task has to be created last as it keeps account of the number of tasks
-	it expects to see running. */
-	//vCreateSuicidalTasks( mainCREATOR_TASK_PRIORITY );
-
-    /* Finally start the scheduler. */
-	vTaskStartScheduler();
-
-	/* Will only reach here if there is insufficient heap available to start
-	the scheduler. */
-	for( ;; );
-}
-/*-----------------------------------------------------------*/
 void vApplicationStackOverflowHook(__unused TaskHandle_t xTask, char *pcTaskName )
 {
 	printf("[free_rtos] Application stack overflow at task: %s\n", pcTaskName);
 }
-
 
 void vApplicationMallocFailedHook(void)
 {
@@ -227,6 +162,26 @@ void _general_exception_handler( unsigned long ulCause, unsigned long ulStatus )
     }
 }
 /*-----------------------------------------------------------*/
+#if FREERTOS_DEMOS_TASKS
+
+// Counters that are incremented on each iteration of the RegTest tasks
+// so long as no errors have been detected.
+volatile unsigned long ulRegTest1Counter = 0UL, ulRegTest2Counter = 0UL;
+
+// The parameters passed to the reg test tasks.  This is just done to check
+// the parameter passing mechanism is working correctly.
+#define mainREG_TEST_1_PARAMETER    ( ( void * ) 0x12345678 )
+#define mainREG_TEST_2_PARAMETER    ( ( void * ) 0x87654321 )
+
+// Execute all of the check functions to ensure the tests haven't failed.
+
+static void prvCheckTask( void *pvParameters );
+
+
+// The register test (or RegTest) tasks as described at the top of this file.
+
+static void prvFirstRegTestTask( void *pvParameters );
+static void prvSecondRegTestTask( void *pvParameters );
 
 static void prvCheckTask( void *pvParameters )
 {
@@ -539,3 +494,43 @@ static void prvSecondRegTestTask( void *pvParameters )
 }
 /*-----------------------------------------------------------*/
 
+#endif
+
+int main( void )
+{
+        #if FREERTOS_DEMOS_TASKS
+            // Create all the other standard demo tasks.  These serve no purpose other
+            // than to test the port and demonstrate the use of the FreeRTOS API.
+            vStartIntegerMathTasks( mainGENERIC_QUEUE_PRIORITY );
+            vStartPolledQueueTasks( mainQUEUE_POLL_PRIORITY );
+            vStartBlockingQueueTasks( mainQUEUE_BLOCK_PRIORITY );
+            vCreateBlockTimeTasks();
+            vStartSemaphoreTasks( mainSEMAPHORE_TASK_PRIORITY );
+            vStartDynamicPriorityTasks();
+            vStartQueuePeekTasks();
+            vStartGenericQueueTasks( mainGENERIC_QUEUE_PRIORITY );
+            vStartCountingSemaphoreTasks();
+            vStartRecursiveMutexTasks();
+
+            // prvCheckTask uses sprintf so requires more stack.
+            xTaskCreate( prvCheckTask, "Check", configMINIMAL_STACK_SIZE, NULL, mainCHECK_TASK_PRIORITY, NULL );
+
+            // The RegTest tasks as described at the top of this file.
+            xTaskCreate( prvFirstRegTestTask, "Rreg1", configMINIMAL_STACK_SIZE, mainREG_TEST_1_PARAMETER, mainREG_TEST_PRIORITY, NULL );
+            xTaskCreate( prvSecondRegTestTask, "Rreg2", configMINIMAL_STACK_SIZE, mainREG_TEST_2_PARAMETER, mainREG_TEST_PRIORITY, NULL );
+        #endif
+        /* start the network task to start the network */
+        xTaskCreate( xEthernetRun, "eth0", KB(4), NULL, mainQUEUE_POLL_PRIORITY, NULL);
+
+        /* This task has to be created last as it keeps account of the number of tasks
+        it expects to see running. */
+        #if FREERTOS_DEMOS_TASKS
+        vCreateSuicidalTasks( mainCREATOR_TASK_PRIORITY );
+        #endif
+        /* Finally start the scheduler. */
+        vTaskStartScheduler();
+
+        /* Will only reach here if there is insufficient heap available to start
+        the scheduler. */
+        for( ;; );
+}

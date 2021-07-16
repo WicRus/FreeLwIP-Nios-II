@@ -267,7 +267,7 @@ add_sw_property supported_bsp_type FreeRTOS
 
 # Add preprocessor definitions to public makefile: ALT_LWIP
 add_sw_property alt_cppflags_addition "-DALT_LWIP"
-add_sw_property alt_cppflags_addition "-DTSE_MY_SYSTEM"
+add_sw_property alt_cppflags_addition "-DLWIP_TSE_MY_SYSTEM"
 
 
 
