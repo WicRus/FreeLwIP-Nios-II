@@ -43,7 +43,6 @@
 
 #include <sys/time.h>
 
-#include "lwip/debug.h"
 
 // include Altera system configuraion
 #include <system.h>
@@ -113,7 +112,7 @@
  * MEM_SIZE: the size of the heap memory. If the application will send
  * a lot of data that needs to be copied, this should be set high.
  */
-#define MEM_SIZE						CONF_LWIP_MEM_SIZE
+#define MEM_SIZE						SYSTEM_H_LWIP_MEM_SIZE
 
 /**
  * MEMP_OVERFLOW_CHECK: memp overflow protection reserves a configurable
@@ -124,7 +123,7 @@
  *    MEMP_OVERFLOW_CHECK >= 2 checks each element in every pool every time
  *      memp_malloc() or memp_free() is called (useful but slow!)
  */
-#define MEMP_OVERFLOW_CHECK             CONF_LWIP_OVERFLOW_CHECK
+#define MEMP_OVERFLOW_CHECK             SYSTEM_H_LWIP_OVERFLOW_CHECK
 
 /**
  * MEMP_SANITY_CHECK==1: run a sanity check after each memp_free() to make
@@ -184,32 +183,32 @@
  * If the application sends a lot of data out of ROM (or other static memory),
  * this should be set high.
  */
-#define MEMP_NUM_PBUF                   CONF_LWIP_PBUF_COUNT
+#define MEMP_NUM_PBUF                   SYSTEM_H_LWIP_PBUF_COUNT
 
 /**
  * MEMP_NUM_RAW_PCB: Number of raw connection PCBs
  * (requires the LWIP_RAW option)
  */
-#define MEMP_NUM_RAW_PCB                CONF_LWIP_RAW_PCB
+#define MEMP_NUM_RAW_PCB                SYSTEM_H_LWIP_RAW_PCB
 
 /**
  * MEMP_NUM_UDP_PCB: the number of UDP protocol control blocks. One
  * per active UDP "connection".
  * (requires the LWIP_UDP option)
  */
-#define MEMP_NUM_UDP_PCB                CONF_LWIP_UDP_PCB
+#define MEMP_NUM_UDP_PCB                SYSTEM_H_LWIP_UDP_PCB
 
 /**
  * MEMP_NUM_TCP_PCB: the number of simulatenously active TCP connections.
  * (requires the LWIP_TCP option)
  */
-#define MEMP_NUM_TCP_PCB                CONF_LWIP_TCP_PCB
+#define MEMP_NUM_TCP_PCB                SYSTEM_H_LWIP_TCP_PCB
 
 /**
  * MEMP_NUM_TCP_PCB_LISTEN: the number of listening TCP connections.
  * (requires the LWIP_TCP option)
  */
-#define MEMP_NUM_TCP_PCB_LISTEN         CONF_LWIP_TCP_PCB_LISTEN
+#define MEMP_NUM_TCP_PCB_LISTEN         SYSTEM_H_LWIP_TCP_PCB_LISTEN
 
 /**
  * MEMP_NUM_TCP_SEG: the number of simultaneously queued TCP segments.
@@ -249,13 +248,13 @@
  * MEMP_NUM_NETBUF: the number of struct netbufs.
  * (only needed if you use the sequential API, like api_lib.c)
  */
-#define MEMP_NUM_NETBUF                 (CONF_LWIP_RAW_PCB + CONF_LWIP_UDP_PCB + CONF_LWIP_TCP_PCB + CONF_LWIP_TCP_PCB_LISTEN)
+#define MEMP_NUM_NETBUF                 (SYSTEM_H_LWIP_RAW_PCB + SYSTEM_H_LWIP_UDP_PCB + SYSTEM_H_LWIP_TCP_PCB + SYSTEM_H_LWIP_TCP_PCB_LISTEN)
 
 /**
  * MEMP_NUM_NETCONN: the number of struct netconns.
  * (only needed if you use the sequential API, like api_lib.c)
  */
-#define MEMP_NUM_NETCONN                (CONF_LWIP_RAW_PCB + CONF_LWIP_UDP_PCB + CONF_LWIP_TCP_PCB + CONF_LWIP_TCP_PCB_LISTEN)
+#define MEMP_NUM_NETCONN                (SYSTEM_H_LWIP_RAW_PCB + SYSTEM_H_LWIP_UDP_PCB + SYSTEM_H_LWIP_TCP_PCB + SYSTEM_H_LWIP_TCP_PCB_LISTEN)
 
 /**
  * MEMP_NUM_TCPIP_MSG_API: the number of struct tcpip_msg, which are used
@@ -361,7 +360,7 @@
  * If ETHARP_VLAN_CHECK is defined, only VLAN-traffic for this VLAN is accepted.
  * If ETHARP_VLAN_CHECK is not defined, all traffic is accepted.
  */
-#define ETHARP_SUPPORT_VLAN             CONF_LWIP_PROTO_VLAN
+#define ETHARP_SUPPORT_VLAN             SYSTEM_H_LWIP_PROTO_VLAN
 
 /** LWIP_ETHERNET==1: enable ethernet support for PPPoE even though ARP
  * might be disabled
@@ -391,7 +390,7 @@
  * interfaces. If you are going to run lwIP on a device with only one network
  * interface, define this to 0.
  */
-#define IP_FORWARD                      CONF_LWIP_IP_FORWARD
+#define IP_FORWARD                      SYSTEM_H_LWIP_IP_FORWARD
 
 /**
  * IP_OPTIONS_ALLOWED: Defines the behavior for IP options.
@@ -447,7 +446,7 @@
 /**
  * IP_DEFAULT_TTL: Default value for Time-To-Live used by transport layers.
  */
-#define IP_DEFAULT_TTL                  CONF_LWIP_DEFAULT_TTL
+#define IP_DEFAULT_TTL                  SYSTEM_H_LWIP_DEFAULT_TTL
 
 /**
  * IP_SOF_BROADCAST=1: Use the SOF_BROADCAST field to enable broadcast
@@ -482,7 +481,7 @@
  * LWIP_ICMP==1: Enable ICMP module inside the IP stack.
  * Be careful, disable that make your product non-compliant to RFC1122
  */
-#define LWIP_ICMP                       CONF_LWIP_PROTO_ICMP
+#define LWIP_ICMP                       SYSTEM_H_LWIP_PROTO_ICMP
 
 /**
  * ICMP_TTL: Default value for Time-To-Live used by ICMP packets.
@@ -522,7 +521,7 @@
 /**
  * LWIP_DHCP==1: Enable DHCP module.
  */
-#define LWIP_DHCP                       CONF_LWIP_PROTO_DHCP
+#define LWIP_DHCP                       SYSTEM_H_LWIP_PROTO_DHCP
 
 /**
  * DHCP_DOES_ARP_CHECK==1: Do an ARP check on the offered address.
@@ -537,7 +536,7 @@
 /**
  * LWIP_AUTOIP==1: Enable AUTOIP module.
  */
-#define LWIP_AUTOIP                     CONF_LWIP_PROTO_AUTOIP
+#define LWIP_AUTOIP                     SYSTEM_H_LWIP_PROTO_AUTOIP
 
 /**
  * LWIP_DHCP_AUTOIP_COOP==1: Allow DHCP and AUTOIP to be both enabled on
@@ -563,7 +562,7 @@
  * LWIP_SNMP==1: Turn on SNMP module. UDP must be available for SNMP
  * transport.
  */
-#define LWIP_SNMP                       CONF_LWIP_PROTO_SNMP
+#define LWIP_SNMP                       SYSTEM_H_LWIP_PROTO_SNMP
 
 /**
  * SNMP_CONCURRENT_REQUESTS: Number of concurrent requests the module will
@@ -619,7 +618,7 @@
 /**
  * LWIP_IGMP==1: Turn on IGMP module.
  */
-#define LWIP_IGMP                       CONF_LWIP_PROTO_IGMP
+#define LWIP_IGMP                       SYSTEM_H_LWIP_PROTO_IGMP
 
 /*
    ----------------------------------
@@ -630,7 +629,7 @@
  * LWIP_DNS==1: Turn on DNS module. UDP must be available for DNS
  * transport.
  */
-#define LWIP_DNS                        CONF_LWIP_PROTO_DNS
+#define LWIP_DNS                        SYSTEM_H_LWIP_PROTO_DNS
 
 /** DNS maximum number of entries to maintain locally. */
 #define DNS_TABLE_SIZE                  4
@@ -676,7 +675,7 @@
 /**
  * LWIP_UDP==1: Turn on UDP.
  */
-#define LWIP_UDP                        CONF_LWIP_PROTO_UDP
+#define LWIP_UDP                        SYSTEM_H_LWIP_PROTO_UDP
 
 /**
  * LWIP_UDPLITE==1: Turn on UDP-Lite. (Requires LWIP_UDP)
@@ -701,7 +700,7 @@
 /**
  * LWIP_TCP==1: Turn on TCP.
  */
-#define LWIP_TCP                        CONF_LWIP_PROTO_TCP
+#define LWIP_TCP                        SYSTEM_H_LWIP_PROTO_TCP
 
 /**
  * TCP_TTL: Default Time-To-Live value.
@@ -886,7 +885,7 @@
  * LWIP_NETIF_LOOPBACK==1: Support sending packets with a destination IP
  * address equal to the netif IP address, looping them back up the stack.
  */
-#define LWIP_NETIF_LOOPBACK             CONF_LWIP_LOOPBACK
+#define LWIP_NETIF_LOOPBACK             SYSTEM_H_LWIP_LOOPBACK
 
 /**
  * LWIP_LOOPBACK_MAX_PBUFS: Maximum number of pbufs on queue for loopback
@@ -928,7 +927,7 @@
 /**
  * LWIP_HAVE_LOOPIF==1: Support loop interface (127.0.0.1) and loopif.c
  */
-#define LWIP_HAVE_LOOPIF                		CONF_LWIP_LOOPBACKIF
+#define LWIP_HAVE_LOOPIF                		SYSTEM_H_LWIP_LOOPBACKIF
 
 /*
    ------------------------------------
@@ -1161,7 +1160,7 @@
 /**
  * LWIP_STATS==1: Enable statistics collection in lwip_stats.
  */
-#define LWIP_STATS                      		CONF_LWIP_STATS
+#define LWIP_STATS                      		SYSTEM_H_LWIP_STATS
 
 #define LWIP_STATS_LARGE						1
 
@@ -1411,39 +1410,38 @@
 /**
  * CHECKSUM_GEN_IP==1: Generate checksums in software for outgoing IP packets.
  */
-#define CHECKSUM_GEN_IP                 CONF_LWIP_CHECKSUM_GEN_IP
+#define CHECKSUM_GEN_IP                 SYSTEM_H_LWIP_CHECKSUM_GEN_IP
 
 /**
  * CHECKSUM_GEN_UDP==1: Generate checksums in software for outgoing UDP packets.
  */
-#define CHECKSUM_GEN_UDP                CONF_LWIP_CHECKSUM_GEN_UDP
+#define CHECKSUM_GEN_UDP                SYSTEM_H_LWIP_CHECKSUM_GEN_UDP
 
 /**
  * CHECKSUM_GEN_TCP==1: Generate checksums in software for outgoing TCP packets.
  */
-#define CHECKSUM_GEN_TCP                CONF_LWIP_CHECKSUM_GEN_TCP
+#define CHECKSUM_GEN_TCP                SYSTEM_H_LWIP_CHECKSUM_GEN_TCP
 
 /**
  * CHECKSUM_CHECK_IP==1: Check checksums in software for incoming IP packets.
  */
-#define CHECKSUM_CHECK_IP               CONF_LWIP_CHECKSUM_CHECK_IP
+#define CHECKSUM_CHECK_IP               SYSTEM_H_LWIP_CHECKSUM_CHECK_IP
 
 /**
  * CHECKSUM_CHECK_UDP==1: Check checksums in software for incoming UDP packets.
  */
-#define CHECKSUM_CHECK_UDP              CONF_LWIP_CHECKSUM_CHECK_UDP
+#define CHECKSUM_CHECK_UDP              SYSTEM_H_LWIP_CHECKSUM_CHECK_UDP
 
 /**
  * CHECKSUM_CHECK_TCP==1: Check checksums in software for incoming TCP packets.
  */
-#define CHECKSUM_CHECK_TCP              CONF_LWIP_CHECKSUM_CHECK_TCP
+#define CHECKSUM_CHECK_TCP              SYSTEM_H_LWIP_CHECKSUM_CHECK_TCP
 
 /**
  * LWIP_CHECKSUM_ON_COPY==1: Calculate checksum when copying data from
  * application buffers to pbufs.
  */
 #define LWIP_CHECKSUM_ON_COPY			1
-//#define LWIP_CHKSUM_COPY_ALGORITHM		3
 #define LWIP_CHKSUM_ALGORITHM			3
 
 /*
@@ -1451,6 +1449,16 @@
    ---------- Debugging options ----------
    ---------------------------------------
 */
+#if  ( SYSTEM_H_LWIP_DEBUG )
+    #define LWIP_DEBUG					1
+#endif
+
+#if ( SYSTEM_H_LWIP_DEBUG_ALL_ON )
+    #define CONF_LWIP_DEBUG_GLOBAL_SET  LWIP_DBG_ON
+#else
+    #define CONF_LWIP_DEBUG_GLOBAL_SET   LWIP_DBG_OFF
+#endif
+#include "lwip/debug.h"
 /**
  * LWIP_DBG_MIN_LEVEL: After masking, the value of the debug is
  * compared against this value. If it is smaller, then debugging
@@ -1463,172 +1471,172 @@
  * LWIP_DBG_TYPES_ON: A mask that can be used to globally enable/disable
  * debug messages of certain types.
  */
-#define LWIP_DBG_TYPES_ON               LWIP_DBG_OFF
+#define LWIP_DBG_TYPES_ON               CONF_LWIP_DEBUG_GLOBAL_SET
 
 /**
  * ETHARP_DEBUG: Enable debugging in etharp.c.
  */
-#define ETHARP_DEBUG                    LWIP_DBG_OFF
+#define ETHARP_DEBUG                    CONF_LWIP_DEBUG_GLOBAL_SET
 
 /**
  * NETIF_DEBUG: Enable debugging in netif.c.
  */
-#define NETIF_DEBUG                     LWIP_DBG_OFF
+#define NETIF_DEBUG                     CONF_LWIP_DEBUG_GLOBAL_SET
 
 /**
  * PBUF_DEBUG: Enable debugging in pbuf.c.
  */
-#define PBUF_DEBUG                      LWIP_DBG_OFF
+#define PBUF_DEBUG                      CONF_LWIP_DEBUG_GLOBAL_SET
 
 /**
  * API_LIB_DEBUG: Enable debugging in api_lib.c.
  */
-#define API_LIB_DEBUG                   LWIP_DBG_OFF
+#define API_LIB_DEBUG                   CONF_LWIP_DEBUG_GLOBAL_SET
 
 /**
  * API_MSG_DEBUG: Enable debugging in api_msg.c.
  */
-#define API_MSG_DEBUG                   LWIP_DBG_OFF
+#define API_MSG_DEBUG                   CONF_LWIP_DEBUG_GLOBAL_SET
 
 /**
  * SOCKETS_DEBUG: Enable debugging in sockets.c.
  */
-#define SOCKETS_DEBUG                   LWIP_DBG_OFF
+#define SOCKETS_DEBUG                   CONF_LWIP_DEBUG_GLOBAL_SET
 
 /**
  * ICMP_DEBUG: Enable debugging in icmp.c.
  */
-#define ICMP_DEBUG                      LWIP_DBG_OFF
+#define ICMP_DEBUG                      CONF_LWIP_DEBUG_GLOBAL_SET
 
 /**
  * IGMP_DEBUG: Enable debugging in igmp.c.
  */
-#define IGMP_DEBUG                      LWIP_DBG_OFF
+#define IGMP_DEBUG                      CONF_LWIP_DEBUG_GLOBAL_SET
 
 /**
  * INET_DEBUG: Enable debugging in inet.c.
  */
-#define INET_DEBUG                      LWIP_DBG_OFF
+#define INET_DEBUG                      CONF_LWIP_DEBUG_GLOBAL_SET
 
 /**
  * IP_DEBUG: Enable debugging for IP.
  */
-#define IP_DEBUG                        LWIP_DBG_OFF
+#define IP_DEBUG                        CONF_LWIP_DEBUG_GLOBAL_SET
 
 /**
  * IP_REASS_DEBUG: Enable debugging in ip_frag.c for both frag & reass.
  */
-#define IP_REASS_DEBUG                  LWIP_DBG_OFF
+#define IP_REASS_DEBUG                  CONF_LWIP_DEBUG_GLOBAL_SET
 
 /**
  * RAW_DEBUG: Enable debugging in raw.c.
  */
-#define RAW_DEBUG                       LWIP_DBG_OFF
+#define RAW_DEBUG                       CONF_LWIP_DEBUG_GLOBAL_SET
 
 /**
  * MEM_DEBUG: Enable debugging in mem.c.
  */
-#define MEM_DEBUG                       LWIP_DBG_OFF
+#define MEM_DEBUG                       CONF_LWIP_DEBUG_GLOBAL_SET
 
 /**
  * MEMP_DEBUG: Enable debugging in memp.c.
  */
-#define MEMP_DEBUG                      LWIP_DBG_OFF
+#define MEMP_DEBUG                      CONF_LWIP_DEBUG_GLOBAL_SET
 
 /**
  * SYS_DEBUG: Enable debugging in sys.c.
  */
-#define SYS_DEBUG                       LWIP_DBG_OFF
+#define SYS_DEBUG                       CONF_LWIP_DEBUG_GLOBAL_SET
 
 /**
  * TCP_DEBUG: Enable debugging for TCP.
  */
-#define TCP_DEBUG                       LWIP_DBG_OFF
+#define TCP_DEBUG                       CONF_LWIP_DEBUG_GLOBAL_SET
 
 /**
  * TCP_INPUT_DEBUG: Enable debugging in tcp_in.c for incoming debug.
  */
-#define TCP_INPUT_DEBUG                 LWIP_DBG_OFF
+#define TCP_INPUT_DEBUG                 CONF_LWIP_DEBUG_GLOBAL_SET
 
 /**
  * TCP_FR_DEBUG: Enable debugging in tcp_in.c for fast retransmit.
  */
-#define TCP_FR_DEBUG                    LWIP_DBG_OFF
+#define TCP_FR_DEBUG                    CONF_LWIP_DEBUG_GLOBAL_SET
 
 /**
  * TCP_RTO_DEBUG: Enable debugging in TCP for retransmit
  * timeout.
  */
-#define TCP_RTO_DEBUG                   LWIP_DBG_OFF
+#define TCP_RTO_DEBUG                   CONF_LWIP_DEBUG_GLOBAL_SET
 
 /**
  * TCP_CWND_DEBUG: Enable debugging for TCP congestion window.
  */
-#define TCP_CWND_DEBUG                  LWIP_DBG_OFF
+#define TCP_CWND_DEBUG                  CONF_LWIP_DEBUG_GLOBAL_SET
 
 /**
  * TCP_WND_DEBUG: Enable debugging in tcp_in.c for window updating.
  */
-#define TCP_WND_DEBUG                   LWIP_DBG_OFF
+#define TCP_WND_DEBUG                   CONF_LWIP_DEBUG_GLOBAL_SET
 
 /**
  * TCP_OUTPUT_DEBUG: Enable debugging in tcp_out.c output functions.
  */
-#define TCP_OUTPUT_DEBUG                LWIP_DBG_OFF
+#define TCP_OUTPUT_DEBUG                CONF_LWIP_DEBUG_GLOBAL_SET
 
 /**
  * TCP_RST_DEBUG: Enable debugging for TCP with the RST message.
  */
-#define TCP_RST_DEBUG                   LWIP_DBG_OFF
+#define TCP_RST_DEBUG                   CONF_LWIP_DEBUG_GLOBAL_SET
 
 /**
  * TCP_QLEN_DEBUG: Enable debugging for TCP queue lengths.
  */
-#define TCP_QLEN_DEBUG                  LWIP_DBG_OFF
+#define TCP_QLEN_DEBUG                  CONF_LWIP_DEBUG_GLOBAL_SET
 
 /**
  * UDP_DEBUG: Enable debugging in UDP.
  */
-#define UDP_DEBUG                       LWIP_DBG_OFF
+#define UDP_DEBUG                       CONF_LWIP_DEBUG_GLOBAL_SET
 
 /**
  * TCPIP_DEBUG: Enable debugging in tcpip.c.
  */
-#define TCPIP_DEBUG                     LWIP_DBG_OFF
+#define TCPIP_DEBUG                     CONF_LWIP_DEBUG_GLOBAL_SET
 
 /**
  * PPP_DEBUG: Enable debugging for PPP.
  */
-#define PPP_DEBUG                       LWIP_DBG_OFF
+#define PPP_DEBUG                       CONF_LWIP_DEBUG_GLOBAL_SET
 
 /**
  * SLIP_DEBUG: Enable debugging in slipif.c.
  */
-#define SLIP_DEBUG                      LWIP_DBG_OFF
+#define SLIP_DEBUG                      CONF_LWIP_DEBUG_GLOBAL_SET
 
 /**
  * DHCP_DEBUG: Enable debugging in dhcp.c.
  */
-#define DHCP_DEBUG                      LWIP_DBG_OFF
+#define DHCP_DEBUG                      CONF_LWIP_DEBUG_GLOBAL_SET
 
 /**
  * AUTOIP_DEBUG: Enable debugging in autoip.c.
  */
-#define AUTOIP_DEBUG                    LWIP_DBG_OFF
+#define AUTOIP_DEBUG                    CONF_LWIP_DEBUG_GLOBAL_SET
 
 /**
  * SNMP_MSG_DEBUG: Enable debugging for SNMP messages.
  */
-#define SNMP_MSG_DEBUG                  LWIP_DBG_OFF
+#define SNMP_MSG_DEBUG                  CONF_LWIP_DEBUG_GLOBAL_SET
 
 /**
  * SNMP_MIB_DEBUG: Enable debugging for SNMP MIBs.
  */
-#define SNMP_MIB_DEBUG                  LWIP_DBG_OFF
+#define SNMP_MIB_DEBUG                  CONF_LWIP_DEBUG_GLOBAL_SET
 
 /**
  * DNS_DEBUG: Enable debugging for DNS.
  */
-#define DNS_DEBUG                       LWIP_DBG_OFF
+#define DNS_DEBUG                       CONF_LWIP_DEBUG_GLOBAL_SET
 
 #endif /* __LWIPOPTS_H__ */

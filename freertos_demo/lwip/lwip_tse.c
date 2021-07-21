@@ -75,39 +75,40 @@ alt_32 tse_mac_sTxWrite( tse_mac_trans_info *mi,
                        alt_sgdma_descriptor *txDesc)
 {
 
-  alt_32 timeout;
-  alt_u8 result = 0;
-  alt_u16 actualBytesTransferred;
+	alt_32 timeout;
+	alt_u8 result = 0;
+	alt_u16 actualBytesTransferred;
 
-  // Make sure DMA controller is not busy from a former command
-  // and TX is able to accept data
-  timeout = 0;
-  //tse_dprintf("\nWaiting while tx SGDMA is busy......... ");
-  while ( (IORD_ALTERA_AVALON_SGDMA_STATUS(mi->tx_sgdma->base) &
-           ALTERA_AVALON_SGDMA_STATUS_BUSY_MSK) ) {
-           if(timeout++ == ALTERA_TSE_SGDMA_BUSY_TIME_OUT_CNT) {
-            tse_dprintf(4, "[LwIP] WARNING : TX SGDMA Timeout\n");
-            return ENP_RESOURCE;  // avoid being stuck here
-           }
-  }
+	// Make sure DMA controller is not busy from a former command
+	// and TX is able to accept data
+	timeout = 0;
+	while ( (IORD_ALTERA_AVALON_SGDMA_STATUS(mi->tx_sgdma->base) &
+		   ALTERA_AVALON_SGDMA_STATUS_BUSY_MSK) )
+		{
+		if(timeout++ == ALTERA_TSE_SGDMA_BUSY_TIME_OUT_CNT)
+			{
+			tse_dprintf(4, "[LwIP] WARNING : TX SGDMA Timeout\n");
+			return ENP_RESOURCE;  // avoid being stuck here
+			}
+		}
 
-  // Set up the SGDMA
-  // Clear the status and control bits of the SGDMA descriptor
-  IOWR_ALTERA_AVALON_SGDMA_CONTROL (mi->tx_sgdma->base, 0);
-  IOWR_ALTERA_AVALON_SGDMA_STATUS (mi->tx_sgdma->base, 0xFF);
+	// Set up the SGDMA
+	// Clear the status and control bits of the SGDMA descriptor
+	IOWR_ALTERA_AVALON_SGDMA_CONTROL (mi->tx_sgdma->base, 0);
+	IOWR_ALTERA_AVALON_SGDMA_STATUS (mi->tx_sgdma->base, 0xFF);
 
-  // Start SGDMA (blocking call)
-  result = alt_avalon_sgdma_do_sync_transfer(
-                mi->tx_sgdma,
-                (alt_sgdma_descriptor *) &txDesc[0]);
+	// Start SGDMA (blocking call)
+	result = alt_avalon_sgdma_do_sync_transfer(
+				mi->tx_sgdma,
+				(alt_sgdma_descriptor *) &txDesc[0]);
 
-  if (result != 0)
-    return -1;
+	if (result & ALTERA_AVALON_SGDMA_STATUS_ERROR_MSK)
+		return -result;
 
-  /* perform cache save read to obtain actual bytes transferred for current sgdma descriptor */
-  actualBytesTransferred = IORD_ALTERA_TSE_SGDMA_DESC_ACTUAL_BYTES_TRANSFERRED(&txDesc[0]);
+	/* perform cache save read to obtain actual bytes transferred for current sgdma descriptor */
+	actualBytesTransferred = IORD_ALTERA_TSE_SGDMA_DESC_ACTUAL_BYTES_TRANSFERRED(&txDesc[0]);
 
-  return actualBytesTransferred;
+	return actualBytesTransferred;
 }
 
 
@@ -1044,7 +1045,7 @@ alt_32 alt_tse_phy_add_profile_default() {
                            0,                              /* Location of Duplex Status   (ignored)                      */
                            0,                              /* Location of Link Status     (ignored)                      */
                            &KSZ9031RNX_config,                 /* No function pointer configure              */
-                                                   &KSZ9031RNX_link_status_read      /* Function pointer to read from PHY specific status register */
+                           &KSZ9031RNX_link_status_read      /* Function pointer to read from PHY specific status register */
                           };
     /* add supported PHY to profile */
     alt_tse_phy_add_profile(&MV88E1111);
@@ -2171,7 +2172,7 @@ alt_32 alt_tse_phy_set_common_speed(alt_tse_mac_group *pmac_group, alt_32 common
  * @API Type:   Internal
  * @param pmac  Pointer to the first TSE MAC Control Interface Base address of MAC group
  */
-alt_32 marvell_phy_cfg(np_tse_mac *pmac) {
+alt_u32 marvell_phy_cfg(np_tse_mac *pmac) {
 
         alt_u16 dat;
 
@@ -2192,7 +2193,7 @@ alt_32 marvell_phy_cfg(np_tse_mac *pmac) {
  * @API Type:   Internal
  * @param pmac  Pointer to the first TSE MAC Control Interface Base address within MAC group
  */
-alt_32 marvell_cfg_gmii(np_tse_mac *pmac) {
+alt_u32 marvell_cfg_gmii(np_tse_mac *pmac) {
 
         alt_u16 dat = IORD(&pmac->mdio1.reg1b, 0);
     dat &= 0xfff0;
@@ -2216,7 +2217,7 @@ alt_32 marvell_cfg_gmii(np_tse_mac *pmac) {
  * @API Type:   Internal
  * @param pmac  Pointer to the first TSE MAC Control Interface Base address within MAC group
  */
-alt_32 marvell_cfg_sgmii(np_tse_mac *pmac) {
+alt_u32 marvell_cfg_sgmii(np_tse_mac *pmac) {
 
         alt_u16 dat = IORD(&pmac->mdio1.reg1b, 0);
     dat &= 0xfff0;
@@ -2240,7 +2241,7 @@ alt_32 marvell_cfg_sgmii(np_tse_mac *pmac) {
  * @API Type:   Internal
  * @param pmac  Pointer to the first TSE MAC Control Interface Base address within MAC group
  */
-alt_32 marvell_cfg_rgmii(np_tse_mac *pmac) {
+alt_u32 marvell_cfg_rgmii(np_tse_mac *pmac) {
 
         alt_u16 dat = IORD(&pmac->mdio1.reg1b, 0);
     dat &= 0xfff0;

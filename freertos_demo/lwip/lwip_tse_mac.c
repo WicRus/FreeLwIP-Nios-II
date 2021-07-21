@@ -239,7 +239,7 @@ int tse_mac_init(int iface, struct ethernetif *ethernetif)
                                         (int)((unsigned char) ethernetif->ethaddr->addr[5] <<  8)) & 0xFFFF));
 
         /* enable MAC */
-        dat = ALTERA_TSEMAC_CMD_TX_ENA_MSK       |
+        dat	= 			ALTERA_TSEMAC_CMD_TX_ENA_MSK       |
                         ALTERA_TSEMAC_CMD_RX_ENA_MSK       |
                         mmac_cc_RX_ERR_DISCARD_mask        |
 #if ENABLE_PHY_LOOPBACK
@@ -367,9 +367,9 @@ int tse_sgdma_rx_isr(void * context, __unused u_long intnum)
 
 #if 1 // Use the unpatched version of tse_mac_raw_send
 
+
 #include <lwip/ip.h>
 #include <lwip/icmp.h>
-
 /* @Function Description -  TSE transmit API to send data to the MAC
  *
  *
@@ -393,6 +393,8 @@ err_t tse_mac_raw_send(struct netif *netif, struct pbuf *pkt)
         /* Intermediate buffers used for temporary copy of frames that cannot be directrly DMA'ed*/
         char buf2[1560];
 
+        enh_alt_irq_disable_all();
+
         ethernetif = netif->state;
         tse_ptr = ethernetif->tse_info;
         mi = &tse_ptr->mi;
@@ -412,10 +414,12 @@ err_t tse_mac_raw_send(struct netif *netif, struct pbuf *pkt)
                          */
                         memcpy(buf2,data,len);
                         data = (alt_u32 *)buf2;
+                        dprintf(("[LwIP] unaligned buffer\n"));
                 }
 
                 // uncache the ethernet frame
-                ActualData = (void*)(((alt_u32)data));
+                //ActualData = (void*)(((alt_u32)data));
+                ActualData = (alt_u32*)alt_remap_cached( (volatile void*)data, 4 );
 
                 /* Write data to Tx FIFO using the DMA */
                 alt_avalon_sgdma_construct_mem_to_stream_desc(
@@ -431,12 +435,13 @@ err_t tse_mac_raw_send(struct netif *netif, struct pbuf *pkt)
                 tx_length = tse_mac_sTxWrite(mi,&tse_ptr->desc[ALTERA_TSE_FIRST_TX_SGDMA_DESC_OFST]);
 
                 if (tx_length != p->len)
-                        dprintf(("[LwIP] failed to send all bytes, send %d out of %d\r\n", tx_length, p->len));
-
-                ethernetif->bytes_sent += tx_length;
+                    dprintf(("[LwIP] failed to send all bytes, send %d out of %d \n", tx_length, p->len));
+                else
+                	ethernetif->bytes_sent += tx_length;
         }
 
         LINK_STATS_INC(link.xmit);
+        enh_alt_irq_enable_all();
 
         return ERR_OK;
 }
@@ -456,6 +461,7 @@ err_t tse_mac_raw_send(struct netif *netif, struct pbuf *pkt)
  * @return SUCCESS if success, else a negative value
  */
 
+#include "lwip/pbuf.h"
 err_t tse_mac_raw_send(struct netif *netif, struct pbuf *pkt)
 {
         int                tx_length;
@@ -476,7 +482,7 @@ err_t tse_mac_raw_send(struct netif *netif, struct pbuf *pkt)
 
         if(pkt->next != NULL)        // Unwind pbuf chains
         {
-                q = pbuf_alloc(PBUF_RAW, pkt->tot_len, pkt->type);
+                q = pbuf_alloc(PBUF_RAW, pkt->tot_len, pkt->type_internal);
                 for(len = 0, p = pkt; p != NULL; p = p->next)
                 {
                         memcpy(q->payload + len, p->payload, p->len);
@@ -560,7 +566,7 @@ int tse_mac_rcv(struct ethernetif *ethernetif)
 
                         enh_alt_irq_enable_all();
 
-                        dprintf(("[LwIP] No free buffers for RX on iface: %hhd\n", ethernetif->iface));
+                        dprintf(("No free buffers for RX on iface: %hhd\n", ethernetif->iface));
                 }
                 else
                 {

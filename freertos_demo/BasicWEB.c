@@ -123,6 +123,7 @@ struct netconn *pxHTTPListener, *pxNewConnection;
 
 	/* Loop forever */
 	for( ;; ) {
+		//usleep(10000);
 		/* Wait for a first connection. */
 		if(netconn_accept(pxHTTPListener, &pxNewConnection) == ERR_OK) {
 			prvweb_ParseHTMLRequest(pxNewConnection);
@@ -143,7 +144,7 @@ struct netbuf *pxRxBuffer;
 portCHAR *pcRxString;
 unsigned portSHORT usLength;
 static unsigned portLONG ulPageHits = 0;
-
+char time[30];
 	/* We expect to immediately get data. */
 	if(netconn_recv(pxNetCon, &pxRxBuffer) == ERR_OK)
 	{
@@ -167,12 +168,18 @@ static unsigned portLONG ulPageHits = 0;
 
 			/* ... Then the hit count... */
 			strcat( cDynamicPage, cPageHits );
-			strcat( cDynamicPage, "<p><pre>Task          State  Priority  Stack	#<br>************************************************<br>" );
+			strcat( cDynamicPage, "<p><pre>Task          				State	Prior	Stack	#<br>*****************************************************************<br>" );
 
 			/* ... Then the list of tasks and their status... */
-			//vTaskList(( signed portCHAR * ) cDynamicPage + strlen( cDynamicPage ) );
-
+                        #if ( configUSE_STATS_FORMATTING_FUNCTIONS && configUSE_TRACE_FACILITY )
+                        vTaskList( ( portCHAR * ) cDynamicPage + strlen( cDynamicPage ) );
+                        #else
+                        strcat( cDynamicPage, "<p>For task list define configUSE_STATS_FORMATTING_FUNCTIONS and configUSE_TRACE_FACILITY" );
+                        #endif
+            sprintf(time, "<p>timestamp %d", alt_timestamp() / alt_timestamp_freq());
+            strcat( cDynamicPage, time);
 			/* ... Finally the page footer. */
+
 			strcat( cDynamicPage, webHTML_END );
 
 			/* Write out the dynamically generated page. */

@@ -62,7 +62,7 @@
 #define TCP_TIMER_MS				250
 #define USE_DHCP					1
 
-#define mssleep(ms)					vTaskDelay((TickType_t)(ms))
+#define mssleep(ms)					usleep(ms*1000)
 
 #define MY_TIMER					0
 
@@ -223,8 +223,8 @@ int lwip_wait_for_an(int idx, struct ethernetif *ethernetif)
         int retryCount = MAX_RETRY_COUNT;
 
         while (ethernetif->link_alive != 1 && --retryCount) {
-                tse_mac_init(idx, ethernetif);
-                mssleep(100);
+        	tse_mac_init(idx, ethernetif);
+        	mssleep(100);
         }
 
         return retryCount;
@@ -234,7 +234,7 @@ void lwip_handle_interfaces(__unused void *params)
 {
         int idx;
         int active_macs = 0;
-        char tmpbuf[OS_MAX_TASK_NAME_LEN];
+        char tmpbuf[configMAX_TASK_NAME_LEN];
 
         ip_addr_t ip = {0}, subnet = {0}, gateway = {0};
         int dhcp;
@@ -258,7 +258,7 @@ void lwip_handle_interfaces(__unused void *params)
                         if (netif_add(eth, &ip, &subnet, &gateway, eth->state, ethernetif_init, tcpip_input) == NULL)
 #endif
                         {
-                                printf("[LwIP] [eth%d] Fatal error initializing interface\n", idx);
+                                printf("[LwIP] [eth%d] Fatal error initializing interface...\n", idx);
                                 for(;;) ;
                         }
 
@@ -288,8 +288,8 @@ void lwip_handle_interfaces(__unused void *params)
                 printf("[LwIP] OK\n");
 
                 // create input output task and start DHCP or static w/e
-                snprintf(tmpbuf, OS_MAX_TASK_NAME_LEN, "LwIP %*sih", 2, eth->name);
-                tmpbuf[(OS_MAX_TASK_NAME_LEN - 1)] = 0;
+                snprintf(tmpbuf, configMAX_TASK_NAME_LEN, "LwIP %*s", 2, eth->name);
+                tmpbuf[(configMAX_TASK_NAME_LEN - 1)] = 0;
 
                 // create input task, this must be started before we can do any DHCP request
                 sys_thread_new(tmpbuf, lwip_handle_ethernet_input, eth, KB(32), TCPIP_THREAD_PRIO);// == NULL)
@@ -458,8 +458,8 @@ static void lwip_handle_ethernet_input(void *pvParameters)
                 packets_waiting = ethernetif_input(cur_netif);
 
                 // check the link status if there are no packets waiting
-                if (packets_waiting <= 0)
-                        lwip_check_link_status(cur_netif, base);
+               // if (packets_waiting <= 0)
+               //         lwip_check_link_status(cur_netif, base);
         }
 }
 

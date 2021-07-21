@@ -550,7 +550,7 @@ typedef struct alt_tse_phy_profile_struct{
     
     /* Function pointer to execute additional initialization */
     /* Profile specific */
-    alt_32 (*phy_cfg)(np_tse_mac *pmac);
+    alt_u32 (*phy_cfg)(np_tse_mac *pmac);
 	
 	/** Function pointer to read the link status from the PHY specific status register 
 	  * Use this function pointer if the PHY is using different format to store link information in PHY specific status register
@@ -996,7 +996,7 @@ alt_32 alt_tse_phy_set_common_speed(alt_tse_mac_group *pmac_group, alt_32 common
  * @API Type:   Internal
  * @param pmac  Pointer to the first TSE MAC Control Interface Base address of MAC group
  */
-alt_32 marvell_phy_cfg(np_tse_mac *pmac);
+alt_u32 marvell_phy_cfg(np_tse_mac *pmac);
 
                                                                   
                         
@@ -1008,19 +1008,19 @@ alt_32 marvell_phy_cfg(np_tse_mac *pmac);
  * @API Type:   Internal
  * @param pmac  Pointer to the first TSE MAC Control Interface Base address within MAC group
  */
-alt_32 marvell_cfg_gmii(np_tse_mac *pmac);
+alt_u32 marvell_cfg_gmii(np_tse_mac *pmac);
 
 /* @Function Description: Change operating mode of Marvell PHY to SGMII
  * @API Type:   Internal
  * @param pmac  Pointer to the first TSE MAC Control Interface Base address within MAC group
  */
-alt_32 marvell_cfg_sgmii(np_tse_mac *pmac);
+alt_u32 marvell_cfg_sgmii(np_tse_mac *pmac);
 
 /* @Function Description: Change operating mode of Marvell PHY to RGMII
  * @API Type:   Internal
  * @param pmac  Pointer to the first TSE MAC Control Interface Base address within MAC group
  */
-alt_32 marvell_cfg_rgmii(np_tse_mac *pmac);
+alt_u32 marvell_cfg_rgmii(np_tse_mac *pmac);
 
 /* @Function Description: Read link status from PHY specific status register of DP83848C
  * @API Type:   Internal

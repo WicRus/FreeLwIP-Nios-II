@@ -93,22 +93,18 @@ add_sw_property alt_cppflags_addition "-D__freertos__"
 #
 # System settings
 #
-add_sw_setting boolean system_h_define system.preemption OS_USE_PREEMPTION 1 "Set to 1 to use the preemptive kernel, or 0 to use the cooperative kernel."
+add_sw_setting boolean system_h_define system.preemption SYSTEM_H_USE_PREEMPTION 1 "Set to 1 to use the preemptive kernel, or 0 to use the cooperative kernel."
 
-add_sw_setting boolean system_h_define system.idle_hook OS_USE_IDLE_HOOK 0 "Set to 1 if you wish to use an idle hook, or 0 to omit an idle hook."
+add_sw_setting boolean system_h_define system.idle_hook SYSTEM_H_USE_IDLE_HOOK 0 "Set to 1 if you wish to use an idle hook, or 0 to omit an idle hook."
 
-add_sw_setting boolean system_h_define system.use_tick_hook OS_USE_TICK_HOOK 0 "Set to 1 if you wish to use an tick hook, or 0 to omit an tick hook."
+add_sw_setting boolean system_h_define system.use_tick_hook SYSTEM_H_USE_TICK_HOOK 0 "Set to 1 if you wish to use an tick hook, or 0 to omit an tick hook."
 
-add_sw_setting boolean system_h_define system.use_16_bit_ticks OS_USE_16_BIT_TICKS 0 "Time is measured in 'ticks' - which is the number of times the tick interrupt has executed since the kernel was started. The tick count is held in a variable of type portTickType. Defining configUSE_16_BIT_TICKS as 1 causes portTickType to be defined (typedef'ed) as an unsigned 16bit type. Defining configUSE_16_BIT_TICKS as 0 causes portTickType to be defined (typedef'ed) as an unsigned 32bit type.
+add_sw_setting boolean system_h_define system.use_16_bit_ticks SYSTEM_H_USE_16_BIT_TICKS 0 "Time is measured in 'ticks' - which is the number of times the tick interrupt has executed since the kernel was started. The tick count is held in a variable of type portTickType. Defining configUSE_16_BIT_TICKS as 1 causes portTickType to be defined (typedef'ed) as an unsigned 16bit type. Defining configUSE_16_BIT_TICKS as 0 causes portTickType to be defined (typedef'ed) as an unsigned 32bit type.
 
 Using a 16 bit type will greatly improve performance on 8 and 16 bit architectures, but limits the maximum specifiable time period to 65535 'ticks'. Therefore, assuming a tick frequency of 250Hz, the maximum time a task can delay or block when a 16bit counter is used is 262 seconds, compared to 17179869 seconds when using a 32bit counter."
 
-add_sw_setting decimal_number system_h_define system.tick_rate_hz OS_TICK_RATE_HZ 1000 " -- ignored ... calculated on the go -- The frequency of the RTOS tick interrupt.
-The tick interrupt is used to measure time. Therefore a higher tick frequency means time can be measured to a higher resolution. However, a high tick frequency also means that the kernel will use more CPU time so be less efficient. The RTOS demo applications all use a tick rate of 1000Hz. This is used to test the kernel and is higher than would normally be required.
 
-More than one task can share the same priority. The kernel will share processor time between tasks of the same priority by switching between the tasks during each RTOS tick. A high tick rate frequency will therefore also have the effect of reducing the 'time slice' given to each task."
-
-add_sw_setting boolean system_h_define system.idle_should_yield OS_IDLE_SHOULD_YIELD 0 "This parameter controls the behaviour of tasks at the idle priority. It only has an effect if:
+add_sw_setting boolean system_h_define system.idle_should_yield SYSTEM_H_IDLE_SHOULD_YIELD 0 "This parameter controls the behaviour of tasks at the idle priority. It only has an effect if:
 The preemptive scheduler is being used.
 The users application creates tasks that run at the idle priority.
 Tasks that share the same priority will time slice. Assuming none of the tasks get preempted, it might be assumed that each task of at a given priority will be allocated an equal amount of processing time - and if the shared priority is above the idle priority then this is indeed the case.
@@ -128,24 +124,24 @@ Setting configIDLE_SHOULD_YIELD prevents the idle task from yielding processing 
 # Task Settings
 #
 
-add_sw_setting decimal_number system_h_define task.max_priorities OS_MAX_PRIORITIES 5 "The number of priorities available to the application tasks. Any number of tasks can share the same priority. Co-routines are prioritised separately - see configMAX_CO_ROUTINE_PRIORITIES.
+add_sw_setting decimal_number system_h_define task.max_priorities SYSTEM_H_MAX_PRIORITIES 5 "The number of priorities available to the application tasks. Any number of tasks can share the same priority. Co-routines are prioritised separately - see configMAX_CO_ROUTINE_PRIORITIES.
 Each available priority consumes RAM within the kernel so this value should not be set any higher than actually required by your application."
 
-add_sw_setting decimal_number system_h_define task.minimal_stack_size OS_MINIMAL_STACK_SIZE 4096 "The size of the stack used by the idle task. Generally this should not be reduced from the value set in the FreeRTOSConfig.h file provided with the demo application for the port you are using."
+add_sw_setting decimal_number system_h_define task.minimal_stack_size SYSTEM_H_MINIMAL_STACK_SIZE 4096 "The size of the stack used by the idle task. Generally this should not be reduced from the value set in the FreeRTOSConfig.h file provided with the demo application for the port you are using."
 
-add_sw_setting decimal_number system_h_define task.max_task_name_len OS_MAX_TASK_NAME_LEN 40 "The maximum permissible length of the descriptive name given to a task when the task is created. The length is specified in the number of characters including the NULL termination byte."
+add_sw_setting decimal_number system_h_define task.max_task_name_len SYSTEM_H_MAX_TASK_NAME_LEN 40 "The maximum permissible length of the descriptive name given to a task when the task is created. The length is specified in the number of characters including the NULL termination byte."
 
 #
 # Memmory Settings
 # 
-add_sw_setting decimal_number system_h_define memory.total_heap_size OS_TOTAL_HEAP_SIZE 1048576 "The total amount of RAM available to the kernel.
+add_sw_setting decimal_number system_h_define memory.total_heap_size SYSTEM_H_TOTAL_HEAP_SIZE 1048576 "The total amount of RAM available to the kernel.
 This value will only be used if your application makes use of one of the sample memory allocation schemes provided in the FreeRTOS source code download. See the memory configuration section for further details."
 
-add_sw_setting boolean system_h_define memory.malloc_failed_hook OS_USE_MALLOC_FAILED_HOOK 0 "Defines whether vApplicationMallocFailedHook should be called on memory allocation failure"
+add_sw_setting boolean system_h_define memory.malloc_failed_hook SYSTEM_H_USE_MALLOC_FAILED_HOOK 0 "Defines whether vApplicationMallocFailedHook should be called on memory allocation failure"
 
-add_sw_setting boolean system_h_define memory.thread_safe_malloc OS_THREAD_SAFE_NEWLIB 1 "Defines whether if we lock malloc with a recursive mutex so we it would be safe to malloc from different applications simultaniously"
+add_sw_setting boolean system_h_define memory.thread_safe_malloc SYSTEM_H_THREAD_SAFE_NEWLIB 1 "Defines whether if we lock malloc with a recursive mutex so we it would be safe to malloc from different applications simultaniously"
 
-add_sw_setting decimal_number system_h_define memory.check_for_stack_overflow OS_CHECK_FOR_STACK_OVERFLOW 2 "Stack Overflow Detection - Method 1
+add_sw_setting decimal_number system_h_define memory.check_for_stack_overflow SYSTEM_H_CHECK_FOR_STACK_OVERFLOW 2 "Stack Overflow Detection - Method 1
  It is likely that the stack will reach its greatest (deepest) value after the kernel has swapped the task out of the Running state because this is when the stack will contain the task context. At this point the kernel can check that the processor stack pointer remains within the valid stack space. The stack overflow hook function is called if the stack pointer contain a value that is outside of the valid stack range.
 This method is quick but not guaranteed to catch all stack overflows. Set configCHECK_FOR_STACK_OVERFLOW to 1 to use this method only.
 
@@ -161,70 +157,71 @@ To use this method in combination with method 1 set configCHECK_FOR_STACK_OVERFL
 #
 # Debug Settings
 #
-add_sw_setting boolean system_h_define debug.use_trace_facility OS_USE_TRACE_FACILITY 1 "Set to 1 if you wish to include additional structure members and functions to assist with execution visualisation and tracing."
+add_sw_setting boolean system_h_define debug.use_trace_facility SYSTEM_H_USE_TRACE_FACILITY 1 "Set to 1 if you wish to include additional structure members and functions to assist with execution visualisation and tracing."
 
 
 #
 # Mutex Settings
 #
-add_sw_setting boolean system_h_define mutexes.use_mutexes OS_USE_MUTEXES 1 "Set to 1 to include mutex functionality in the build, or 0 to omit mutex functionality from the build. Readers should familiarise themselves with the differences between mutexes and binary semaphores in relation to the FreeRTOS functionality."
+add_sw_setting boolean system_h_define mutexes.use_mutexes SYSTEM_H_USE_MUTEXES 1 "Set to 1 to include mutex functionality in the build, or 0 to omit mutex functionality from the build. Readers should familiarise themselves with the differences between mutexes and binary semaphores in relation to the FreeRTOS functionality."
 
-add_sw_setting boolean system_h_define mutexes.use_recursive_mutexes OS_USE_RECURSIVE_MUTEXES 1 "Set to 1 to include recursive mutex functionality in the build, or 0 to omit recursive mutex functionality from the build."
+add_sw_setting boolean system_h_define mutexes.use_recursive_mutexes SYSTEM_H_USE_RECURSIVE_MUTEXES 1 "Set to 1 to include recursive mutex functionality in the build, or 0 to omit recursive mutex functionality from the build."
 
 #
 # Semaphore Settings
 #
-add_sw_setting boolean system_h_define semaphores.use_counting_semaphores OS_USE_COUNTING_SEMAPHORES 1 "Set to 1 to include counting semaphore functionality in the build, or 0 to omit counting semaphore functionality from the build."
+add_sw_setting boolean system_h_define semaphores.use_counting_semaphores SYSTEM_H_USE_COUNTING_SEMAPHORES 1 "Set to 1 to include counting semaphore functionality in the build, or 0 to omit counting semaphore functionality from the build."
 
 #
 # Queue Settings
 #
-add_sw_setting boolean system_h_define queue.queue_registery_size OS_QUEUE_REGISTRY_SIZE 0 "The queue registry has two purposes, both of which are associated with kernel aware debugging:
+add_sw_setting boolean system_h_define queue.queue_registery_size SYSTEM_H_QUEUE_REGISTRY_SIZE 0 "The queue registry has two purposes, both of which are associated with kernel aware debugging:
 It allows a textual name to be associated with a queue for easy queue identification within a debugging GUI.
 It contains the information required by a debugger to locate each registered queue and semaphore.
 The queue registry has no purpose unless you are using a kernel aware debugger.
 configQUEUE_REGISTRY_SIZE defines the maximum number of queues and semaphores that can be registered. Only those queues and semaphores that you want to view using a kernel aware debugger need be registered. See the API reference documentation for vQueueAddToRegistry() and vQueueUnregisterQueue() for more information."
 
-add_sw_setting boolean system_h_define queue.use_alternative_api OS_USE_ALTERNATIVE_API 0 "The source code that implements the alternative (Alt) API is much simpler because it executes everything from within a critical section. This is the approach taken by many other RTOSes, but FreeRTOS.org has the preferred fully featured API too. The fully featured API has more complex code that takes longer to execute, but makes much less use of critical sections. Therefore the alternative API sacrifices interrupt responsiveness to gain execution speed, whereas the fully featured API sacrifices execution speed to ensure better interrupt responsiveness."
+add_sw_setting boolean system_h_define queue.use_alternative_api SYSTEM_H_USE_ALTERNATIVE_API 0 "The source code that implements the alternative (Alt) API is much simpler because it executes everything from within a critical section. This is the approach taken by many other RTOSes, but FreeRTOS.org has the preferred fully featured API too. The fully featured API has more complex code that takes longer to execute, but makes much less use of critical sections. Therefore the alternative API sacrifices interrupt responsiveness to gain execution speed, whereas the fully featured API sacrifices execution speed to ensure better interrupt responsiveness."
 
 #
 # Co-Routine Settings
 #
-add_sw_setting boolean system_h_define co_routines.use_co_routines OS_USE_CO_ROUTINES 0 "Set to 1 to include co-routine functionality in the build, or 0 to omit co-routine functionality from the build. To include co-routines croutine.c must be included in the project."
+add_sw_setting boolean system_h_define co_routines.use_co_routines SYSTEM_H_USE_CO_ROUTINES 0 "Set to 1 to include co-routine functionality in the build, or 0 to omit co-routine functionality from the build. To include co-routines croutine.c must be included in the project."
 
-add_sw_setting decimal_number system_h_define co_routines.max_co_routine_priority OS_MAX_CO_ROUTINE_PRIORITIES 2 "The number of priorities available to the application co-routines. Any number of co-routines can share the same priority. Tasks are prioritised separately - see configMAX_PRIORITIES."
+add_sw_setting decimal_number system_h_define co_routines.max_co_routine_priority SYSTEM_H_MAX_CO_ROUTINE_PRIORITIES 2 "The number of priorities available to the application co-routines. Any number of co-routines can share the same priority. Tasks are prioritised separately - see configMAX_PRIORITIES."
 
 #
 # Timer Settings
 #
-#add_sw_setting boolean system_h_define timers.use_timers OS_USE_TIMERS 1 "Set to 1 to include software timer functionality, or 0 to omit software timer functionality. See the FreeRTOS software timers page for a full description."
+#add_sw_setting boolean system_h_define timers.use_timers SYSTEM_H_USE_TIMERS 1 "Set to 1 to include software timer functionality, or 0 to omit software timer functionality. See the FreeRTOS software timers page for a full description."
 
-add_sw_setting decimal_number system_h_define timers.timer_task_priority OS_TIMER_TASK_PRIORITY 5 "Sets the priority of the software timer service/daemon task. See the FreeRTOS software timers page for a full description."
+add_sw_setting decimal_number system_h_define timers.timer_task_priority SYSTEM_H_TIMER_TASK_PRIORITY 5 "Sets the priority of the software timer service/daemon task. See the FreeRTOS software timers page for a full description."
 
-add_sw_setting decimal_number system_h_define timers.timer_queue_length OS_TIMER_QUEUE_LENGTH 10 "Sets the length of the software timer command queue. See the FreeRTOS software timers page for a full description."
+add_sw_setting decimal_number system_h_define timers.timer_queue_length SYSTEM_H_TIMER_QUEUE_LENGTH 10 "Sets the length of the software timer command queue. See the FreeRTOS software timers page for a full description."
 
 #
 # Include Settings
 #
-add_sw_setting boolean system_h_define include.inc_task_prio_set OS_VTASKPRIORITYSET 1 "The macros starting 'INCLUDE' allow those components of the real time kernel not utilized by your application to be excluded from your build. This ensures the RTOS does not use any more ROM or RAM than necessary for your particular embedded application."
+add_sw_setting boolean system_h_define include.inc_task_prio_set SYSTEM_H_VTASKPRIORITYSET 1 "The macros starting 'INCLUDE' allow those components of the real time kernel not utilized by your application to be excluded from your build. This ensures the RTOS does not use any more ROM or RAM than necessary for your particular embedded application."
 
-add_sw_setting boolean system_h_define include.inc_task_prio_get OS_UXTASKPRIORITYGET 1 "The macros starting 'INCLUDE' allow those components of the real time kernel not utilized by your application to be excluded from your build. This ensures the RTOS does not use any more ROM or RAM than necessary for your particular embedded application."
+add_sw_setting boolean system_h_define include.inc_task_prio_get SYSTEM_H_UXTASKPRIORITYGET 1 "The macros starting 'INCLUDE' allow those components of the real time kernel not utilized by your application to be excluded from your build. This ensures the RTOS does not use any more ROM or RAM than necessary for your particular embedded application."
 
-add_sw_setting boolean system_h_define include.inc_task_delete OS_VTASKDELETE 1 "The macros starting 'INCLUDE' allow those components of the real time kernel not utilized by your application to be excluded from your build. This ensures the RTOS does not use any more ROM or RAM than necessary for your particular embedded application."
+add_sw_setting boolean system_h_define include.inc_task_delete SYSTEM_H_VTASKDELETE 1 "The macros starting 'INCLUDE' allow those components of the real time kernel not utilized by your application to be excluded from your build. This ensures the RTOS does not use any more ROM or RAM than necessary for your particular embedded application."
 
-add_sw_setting boolean system_h_define include.inc_task_cleanup_resources OS_VTASKCLEANUPRESOURCES 0 "The macros starting 'INCLUDE' allow those components of the real time kernel not utilized by your application to be excluded from your build. This ensures the RTOS does not use any more ROM or RAM than necessary for your particular embedded application."
+add_sw_setting boolean system_h_define include.inc_task_cleanup_resources SYSTEM_H_VTASKCLEANUPRESOURCES 0 "The macros starting 'INCLUDE' allow those components of the real time kernel not utilized by your application to be excluded from your build. This ensures the RTOS does not use any more ROM or RAM than necessary for your particular embedded application."
 
-add_sw_setting boolean system_h_define include.inc_task_suspend OS_VTASKSUSPEND 1 "The macros starting 'INCLUDE' allow those components of the real time kernel not utilized by your application to be excluded from your build. This ensures the RTOS does not use any more ROM or RAM than necessary for your particular embedded application."
+add_sw_setting boolean system_h_define include.inc_task_suspend SYSTEM_H_VTASKSUSPEND 1 "The macros starting 'INCLUDE' allow those components of the real time kernel not utilized by your application to be excluded from your build. This ensures the RTOS does not use any more ROM or RAM than necessary for your particular embedded application."
 
-add_sw_setting boolean system_h_define include.inc_task_delay_util OS_VTASKDELAYUNTIL 1 "The macros starting 'INCLUDE' allow those components of the real time kernel not utilized by your application to be excluded from your build. This ensures the RTOS does not use any more ROM or RAM than necessary for your particular embedded application."
+add_sw_setting boolean system_h_define include.inc_task_delay_util SYSTEM_H_VTASKDELAYUNTIL 1 "The macros starting 'INCLUDE' allow those components of the real time kernel not utilized by your application to be excluded from your build. This ensures the RTOS does not use any more ROM or RAM than necessary for your particular embedded application."
 
-add_sw_setting boolean system_h_define include.inc_task_delay OS_VTASKDELAY 1 "The macros starting 'INCLUDE' allow those components of the real time kernel not utilized by your application to be excluded from your build. This ensures the RTOS does not use any more ROM or RAM than necessary for your particular embedded application."
+add_sw_setting boolean system_h_define include.inc_task_delay SYSTEM_H_VTASKDELAY 1 "The macros starting 'INCLUDE' allow those components of the real time kernel not utilized by your application to be excluded from your build. This ensures the RTOS does not use any more ROM or RAM than necessary for your particular embedded application."
 
-add_sw_setting boolean system_h_define include.inc_task_get_stack OS_UXTASKGETSTACKHIGHWATERMARK 1 "The macros starting 'INCLUDE' allow those components of the real time kernel not utilized by your application to be excluded from your build. This ensures the RTOS does not use any more ROM or RAM than necessary for your particular embedded application."
+add_sw_setting boolean system_h_define include.inc_task_get_stack SYSTEM_H_UXTASKGETSTACKHIGHWATERMARK 1 "The macros starting 'INCLUDE' allow those components of the real time kernel not utilized by your application to be excluded from your build. This ensures the RTOS does not use any more ROM or RAM than necessary for your particular embedded application."
 
+add_sw_setting boolean system_h_define include.inc_task_use_stats_formating_func SYSTEM_H_USE_STATS_FORMATTING_FUNCTIONS 0 "Set configUSE_TRACE_FACILITY and configUSE_STATS_FORMATTING_FUNCTIONS to 1 to include the vTaskList() and vTaskGetRunTimeStats() functions in the build. Setting either to 0 will omit vTaskList() and vTaskGetRunTimeStates() from the build. "
 #
 # Low level kernel settings
 #
-add_sw_setting decimal_number system_h_define kernel.kernel_irq_priority OS_KERNEL_INTERRUPT_PRIORITY 1 "Should not be changed and removed?"
+add_sw_setting decimal_number system_h_define kernel.kernel_irq_priority SYSTEM_H_KERNEL_INTERRUPT_PRIORITY 1 "Should not be changed and removed?"
 
-add_sw_setting decimal_number system_h_define kernel.max_syscall_irq_priority OS_MAX_SYSCALL_INTERRUPT_PRIORITY 3 "Should not be changed and removed?"
+add_sw_setting decimal_number system_h_define kernel.max_syscall_irq_priority SYSTEM_H_MAX_SYSCALL_INTERRUPT_PRIORITY 3 "Should not be changed and removed?"

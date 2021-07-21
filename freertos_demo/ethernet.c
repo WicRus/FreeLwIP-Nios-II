@@ -23,9 +23,7 @@ extern "C"
 // include low-level network support
 #include "lwip_tse_ethernetif.h"
 
-#define mssleep(ms)						vTaskDelay((TickType_t)(ms))
-
-
+#define mssleep(ms)						usleep(ms*1000)
 
 extern void prvMySocketTest(void *params);
 
@@ -147,18 +145,44 @@ void xEthernetRun(__unused void* param)
                 printf("[ethernet] Network initialize failed!\n");
                 return;
         }
-
         // start the demo network tasks
-        //sys_thread_new("TCP Echo Server", prvMySocketTest, NULL, KB(8), 3);
-        //sys_thread_new("HTTP Server", vBasicWEBServer, NULL, KB(8), 3);
+        sys_thread_new("TCP Echo Server", prvMySocketTest, NULL, KB(8), 3);
+        sys_thread_new("HTTP Server", vBasicWEBServer, NULL, KB(8), 3);
 
+        //vTaskDelete( NULL );
+        int len = 0;
         // keep checking our network status, are we connected or disconnected?
+
+#include "sys/alt_timestamp.h"
+//#include "lwip/err.h"
+//#include "lwip/udp.h"
+//    		struct udp_pcb *pcb;
+//    		struct pbuf *p;
+//    		pcb = udp_new();
+//    		 p = pbuf_alloc(PBUF_TRANSPORT,KB(4),PBUF_RAM);
+//
+//    		  ip_addr_t forward_ip;
+//    		unsigned char buffer[100] = "my name is xxxxxxx";
+//    		 p->payload = buffer;
+//    		 IP4_ADDR(&forward_ip, 192, 168, 1, 122);
+//    		 err_t err = udp_bind(pcb, IP_ADDR_ANY, 1111);
+//
+//            printf("[ethernet] bind err %d\n", err);
+//        	err= udp_connect(pcb, &forward_ip , 2222);
+//            printf("[ethernet] conn err %d\n", err);
+//
+//            udp_send(pcb, p);
+        alt_timestamp_start();
+        uint32_t freq = alt_timestamp_freq()/1000;
         while (1) {
                 // TODO wait for semaphore is network status changes
 
                 // sleep for 1 second
-                mssleep(1000);
+        	  	  vTaskDelay(1000);
+                printf("[ethernet] ping %llu\n", alt_timestamp() / freq);
 
+//                udp_send(pcb, p);
+                len++;
 #if 0
                 // TODO not implemented yet...
                 // populate the local pmac structure upon successful network initialization.

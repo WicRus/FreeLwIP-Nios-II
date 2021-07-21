@@ -33,6 +33,7 @@ extern "C" {
 #endif
 
 #include "sys/alt_irq.h"
+#include "system.h"
 
 /*-----------------------------------------------------------
  * Port specific definitions.
@@ -59,21 +60,21 @@ typedef long BaseType_t;
 typedef unsigned long UBaseType_t;
 
 #if( configUSE_16_BIT_TICKS == 1 )
-	typedef uint16_t TickType_t;
-	#define portMAX_DELAY ( TickType_t ) 0xffff
+        typedef uint16_t TickType_t;
+        #define portMAX_DELAY ( TickType_t ) 0xffff
 #else
-	typedef uint32_t TickType_t;
-	#define portMAX_DELAY ( TickType_t ) 0xffffffffUL
+        typedef uint32_t TickType_t;
+        #define portMAX_DELAY ( TickType_t ) 0xffffffffUL
 
-	/* 32-bit tick type on a 32-bit architecture, so reads of the tick count do
-	not need to be guarded with a critical section. */
-	#define portTICK_TYPE_IS_ATOMIC 1
+        /* 32-bit tick type on a 32-bit architecture, so reads of the tick count do
+        not need to be guarded with a critical section. */
+        #define portTICK_TYPE_IS_ATOMIC 1
 #endif
 /*-----------------------------------------------------------*/
 
 /* Architecture specifics. */
 #define portSTACK_GROWTH				( -1 )
-#define portTICK_PERIOD_MS				( ( TickType_t ) 1000 / configTICK_RATE_HZ )
+#define portTICK_PERIOD_MS				( ( TickType_t ) 1000 / SYSTEM_H_CLK_TICKS_PER_SEC )
 #define portBYTE_ALIGNMENT				4
 #define portNOP()                   	asm volatile ( "NOP" )
 #define portCRITICAL_NESTING_IN_TCB		1
