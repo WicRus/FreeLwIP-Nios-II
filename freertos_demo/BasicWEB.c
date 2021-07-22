@@ -144,7 +144,6 @@ struct netbuf *pxRxBuffer;
 portCHAR *pcRxString;
 unsigned portSHORT usLength;
 static unsigned portLONG ulPageHits = 0;
-char time[30];
 	/* We expect to immediately get data. */
 	if(netconn_recv(pxNetCon, &pxRxBuffer) == ERR_OK)
 	{
@@ -176,8 +175,6 @@ char time[30];
                         #else
                         strcat( cDynamicPage, "<p>For task list define configUSE_STATS_FORMATTING_FUNCTIONS and configUSE_TRACE_FACILITY" );
                         #endif
-            sprintf(time, "<p>timestamp %d", alt_timestamp() / alt_timestamp_freq());
-            strcat( cDynamicPage, time);
 			/* ... Finally the page footer. */
 
 			strcat( cDynamicPage, webHTML_END );

@@ -72,11 +72,14 @@
  * THESE PARAMETERS ARE DESCRIBED WITHIN THE 'CONFIGURATION' SECTION OF THE
  * FreeRTOS API DOCUMENTATION AVAILABLE ON THE FreeRTOS.org WEB SITE.
  *----------------------------------------------------------*/
+
+#define SYSTEM_H_CPU_CLOCK_HZ                                   ALT_CPU_FREQ
+
 #define configUSE_PREEMPTION					SYSTEM_H_USE_PREEMPTION
 #define configUSE_IDLE_HOOK					SYSTEM_H_USE_IDLE_HOOK
 #define configUSE_TICK_HOOK					SYSTEM_H_USE_TICK_HOOK
 #define configTICK_RATE_HZ					( ( portTickType ) SYSTEM_H_TICK_RATE_HZ )
-#define configCPU_CLOCK_HZ					( ( unsigned long ) SYSTEM_H_CLK_FREQ )
+#define configCPU_CLOCK_HZ					( ( unsigned long ) SYSTEM_H_CPU_CLOCK_HZ )
 #define configMAX_PRIORITIES					SYSTEM_H_MAX_PRIORITIES
 #define configMINIMAL_STACK_SIZE				( SYSTEM_H_MINIMAL_STACK_SIZE )
 #define configISR_STACK_SIZE					SYSTEM_H_MINIMAL_STACK_SIZE

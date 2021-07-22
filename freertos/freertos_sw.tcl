@@ -103,6 +103,10 @@ add_sw_setting boolean system_h_define system.use_16_bit_ticks SYSTEM_H_USE_16_B
 
 Using a 16 bit type will greatly improve performance on 8 and 16 bit architectures, but limits the maximum specifiable time period to 65535 'ticks'. Therefore, assuming a tick frequency of 250Hz, the maximum time a task can delay or block when a 16bit counter is used is 262 seconds, compared to 17179869 seconds when using a 32bit counter."
 
+add_sw_setting decimal_number system_h_define system.tick_rate_hz SYSTEM_H_TICK_RATE_HZ 1000 "The frequency of the RTOS tick interrupt.
+The tick interrupt is used to measure time. Therefore a higher tick frequency means time can be measured to a higher resolution. However, a high tick frequency also means that the kernel will use more CPU time so be less efficient. The RTOS demo applications all use a tick rate of 1000Hz. This is used to test the kernel and is higher than would normally be required.
+More than one task can share the same priority. The kernel will share processor time between tasks of the same priority by switching between the tasks during each RTOS tick. A high tick rate frequency will therefore also have the effect of reducing the 'time slice' given to each task."
+
 
 add_sw_setting boolean system_h_define system.idle_should_yield SYSTEM_H_IDLE_SHOULD_YIELD 0 "This parameter controls the behaviour of tasks at the idle priority. It only has an effect if:
 The preemptive scheduler is being used.

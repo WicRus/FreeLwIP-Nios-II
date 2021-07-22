@@ -122,12 +122,6 @@ typedef u32_t							ipaddr_t;
 #endif
 
 // We use the default printf functionality from the BSP package
-# define LWIP_PLATFORM_DIAG_(lvl, x)		do { \
-	if ((lvl) >= LWIP_DBG_FORCE_LEVEL) { \
-		printf(((lvl) == LWIP_DBG_LEVEL_WARNING) ? "!! WARNING !! " : ((lvl) == LWIP_DBG_LEVEL_SERIOUS) ? "!! SERIOUS !! " : "!! SEVERE !! "); \
-	} \
-	printf x; \
-} while(0)
 # define LWIP_PLATFORM_DIAG(x)		do { \
         printf x; \
 } while(0)
