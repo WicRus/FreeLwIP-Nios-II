@@ -47,6 +47,7 @@
 //#define LWIP_DEBUG						1
 
 // Set altera typedefs for LwIP (in-case someone chooses a word size different from 32bits)
+/*
 typedef alt_u8							u8_t;
 typedef alt_8							s8_t;
 typedef alt_u16							u16_t;
@@ -56,7 +57,7 @@ typedef alt_32							s32_t;
 
 typedef u32_t				     	mem_ptr_t;
 typedef u32_t							ipaddr_t;
-
+*/
 // Set printf formats
 #define U16_F							"hu"
 #define X16_F							"hX"

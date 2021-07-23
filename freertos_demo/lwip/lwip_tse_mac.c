@@ -437,7 +437,7 @@ err_t tse_mac_raw_send(struct netif *netif, struct pbuf *pkt)
                 if (tx_length != p->len)
                     dprintf(("[LwIP] failed to send all bytes, send %d out of %d \n", tx_length, p->len));
                 else
-                	ethernetif->bytes_sent += tx_length;
+                        ethernetif->bytes_sent += tx_length;
         }
 
         LINK_STATS_INC(link.xmit);
@@ -555,7 +555,14 @@ int tse_mac_rcv(struct ethernetif *ethernetif)
         p = ethernetif->lwipRxPbuf[ethernetif->lwipRxIndexIsr];
         p->tot_len = pklen;
         p->len = pklen;
-        if ((IORD_ALTERA_TSE_SGDMA_DESC_STATUS(&tse_ptr->desc[ALTERA_TSE_FIRST_RX_SGDMA_DESC_OFST]) & ( ALTERA_AVALON_SGDMA_DESCRIPTOR_STATUS_E_CRC_MSK | ALTERA_AVALON_SGDMA_DESCRIPTOR_STATUS_E_PARITY_MSK | ALTERA_AVALON_SGDMA_DESCRIPTOR_STATUS_E_OVERFLOW_MSK |ALTERA_AVALON_SGDMA_DESCRIPTOR_STATUS_E_SYNC_MSK | ALTERA_AVALON_SGDMA_DESCRIPTOR_STATUS_E_UEOP_MSK | ALTERA_AVALON_SGDMA_DESCRIPTOR_STATUS_E_MEOP_MSK | ALTERA_AVALON_SGDMA_DESCRIPTOR_STATUS_E_MSOP_MSK )) == 0)
+        if ((IORD_ALTERA_TSE_SGDMA_DESC_STATUS(&tse_ptr->desc[ALTERA_TSE_FIRST_RX_SGDMA_DESC_OFST]) &
+                        ( ALTERA_AVALON_SGDMA_DESCRIPTOR_STATUS_E_CRC_MSK
+                        | ALTERA_AVALON_SGDMA_DESCRIPTOR_STATUS_E_PARITY_MSK
+                        | ALTERA_AVALON_SGDMA_DESCRIPTOR_STATUS_E_OVERFLOW_MSK
+                        | ALTERA_AVALON_SGDMA_DESCRIPTOR_STATUS_E_SYNC_MSK
+                        | ALTERA_AVALON_SGDMA_DESCRIPTOR_STATUS_E_UEOP_MSK
+                        | ALTERA_AVALON_SGDMA_DESCRIPTOR_STATUS_E_MEOP_MSK
+                        | ALTERA_AVALON_SGDMA_DESCRIPTOR_STATUS_E_MSOP_MSK )) == 0)
         {
                 enh_alt_irq_disable_all();
 

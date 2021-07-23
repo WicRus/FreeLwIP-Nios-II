@@ -42,11 +42,13 @@
 #define ETH_PAD_SIZE        2
 
 #include <sys/time.h>
+#include <arch/cc.h>
+#include <arch/perf.h>
 
 
 // include Altera system configuraion
 #include <system.h>
-
+#define LWIP_RAND() ((u32_t)rand())
 #define LWIP_IPV4                       1
 #define LWIP_DONT_PROVIDE_BYTEORDER_FUNCTIONS
 /*

@@ -75,40 +75,40 @@ alt_32 tse_mac_sTxWrite( tse_mac_trans_info *mi,
                        alt_sgdma_descriptor *txDesc)
 {
 
-	alt_32 timeout;
-	alt_u8 result = 0;
-	alt_u16 actualBytesTransferred;
+        alt_32 timeout;
+        alt_u8 result = 0;
+        alt_u16 actualBytesTransferred;
 
-	// Make sure DMA controller is not busy from a former command
-	// and TX is able to accept data
-	timeout = 0;
-	while ( (IORD_ALTERA_AVALON_SGDMA_STATUS(mi->tx_sgdma->base) &
-		   ALTERA_AVALON_SGDMA_STATUS_BUSY_MSK) )
-		{
-		if(timeout++ == ALTERA_TSE_SGDMA_BUSY_TIME_OUT_CNT)
-			{
-			tse_dprintf(4, "[LwIP] WARNING : TX SGDMA Timeout\n");
-			return ENP_RESOURCE;  // avoid being stuck here
-			}
-		}
+        // Make sure DMA controller is not busy from a former command
+        // and TX is able to accept data
+        timeout = 0;
+        while ( (IORD_ALTERA_AVALON_SGDMA_STATUS(mi->tx_sgdma->base) &
+                   ALTERA_AVALON_SGDMA_STATUS_BUSY_MSK) )
+                {
+                if(timeout++ == ALTERA_TSE_SGDMA_BUSY_TIME_OUT_CNT)
+                        {
+                        tse_dprintf(4, "[LwIP] WARNING : TX SGDMA Timeout\n");
+                        return ENP_RESOURCE;  // avoid being stuck here
+                        }
+                }
 
-	// Set up the SGDMA
-	// Clear the status and control bits of the SGDMA descriptor
-	IOWR_ALTERA_AVALON_SGDMA_CONTROL (mi->tx_sgdma->base, 0);
-	IOWR_ALTERA_AVALON_SGDMA_STATUS (mi->tx_sgdma->base, 0xFF);
+        // Set up the SGDMA
+        // Clear the status and control bits of the SGDMA descriptor
+        IOWR_ALTERA_AVALON_SGDMA_CONTROL (mi->tx_sgdma->base, 0);
+        IOWR_ALTERA_AVALON_SGDMA_STATUS (mi->tx_sgdma->base, 0xFF);
 
-	// Start SGDMA (blocking call)
-	result = alt_avalon_sgdma_do_sync_transfer(
-				mi->tx_sgdma,
-				(alt_sgdma_descriptor *) &txDesc[0]);
+        // Start SGDMA (blocking call)
+        result = alt_avalon_sgdma_do_sync_transfer(
+                                mi->tx_sgdma,
+                                (alt_sgdma_descriptor *) &txDesc[0]);
 
-	if (result & ALTERA_AVALON_SGDMA_STATUS_ERROR_MSK)
-		return -result;
+        if (result & ALTERA_AVALON_SGDMA_STATUS_ERROR_MSK)
+                return -result;
 
-	/* perform cache save read to obtain actual bytes transferred for current sgdma descriptor */
-	actualBytesTransferred = IORD_ALTERA_TSE_SGDMA_DESC_ACTUAL_BYTES_TRANSFERRED(&txDesc[0]);
+        /* perform cache save read to obtain actual bytes transferred for current sgdma descriptor */
+        actualBytesTransferred = IORD_ALTERA_TSE_SGDMA_DESC_ACTUAL_BYTES_TRANSFERRED(&txDesc[0]);
 
-	return actualBytesTransferred;
+        return actualBytesTransferred;
 }
 
 
@@ -139,12 +139,14 @@ alt_32 tse_mac_aRxRead(
   timeout = 0;
 //  tse_dprintf("\nWaiting while rx SGDMA is busy.........");
   while ( (IORD_ALTERA_AVALON_SGDMA_STATUS(mi->rx_sgdma->base) &
-           ALTERA_AVALON_SGDMA_STATUS_BUSY_MSK) ) {
-    if(timeout++ == ALTERA_TSE_SGDMA_BUSY_TIME_OUT_CNT) {
-        tse_dprintf(4, "[LwIP] WARNING : RX SGDMA Timeout\n");
-        return ENP_RESOURCE;  // avoid being stuck here
-    }
-  }
+           ALTERA_AVALON_SGDMA_STATUS_BUSY_MSK) )
+          {
+          if(timeout++ == ALTERA_TSE_SGDMA_BUSY_TIME_OUT_CNT)
+                  {
+                  tse_dprintf(4, "[LwIP] WARNING : RX SGDMA Timeout\n");
+                  return ENP_RESOURCE;  // avoid being stuck here
+                  }
+          }
 
 
   // SGDMA operation invoked for RX (non-blocking call)
@@ -153,8 +155,10 @@ alt_32 tse_mac_aRxRead(
                 (alt_sgdma_descriptor *) &rxDesc[0]);
 
   if (result != 0)
-    return -1;
-
+          {
+      tse_dprintf(4, "[LwIP] WARNING : RX SGDMA Busy %d\n", result);
+      return result;
+          }
   return SUCCESS;
 }
 

@@ -184,10 +184,10 @@ ip4_route(const ip4_addr_t *dest)
   }
 
 #if LWIP_NETIF_LOOPBACK && !LWIP_HAVE_LOOPIF
-  /* loopif is disabled, loopback traffic is passed through any netif */
+  /* loopif is disabled, looopback traffic is passed through any netif */
   if (ip4_addr_isloopback(dest)) {
     /* don't check for link on loopback traffic */
-    if ((netif_default != NULL) && netif_is_up(netif_default)) {
+    if (netif_default != NULL && netif_is_up(netif_default)) {
       return netif_default;
     }
     /* default netif is not up, just use any netif for loopback traffic */
@@ -334,40 +334,6 @@ ip4_forward(struct pbuf *p, struct ip_hdr *iphdr, struct netif *inp)
     IPH_CHKSUM_SET(iphdr, (u16_t)(IPH_CHKSUM(iphdr) + PP_HTONS(0x100) + 1));
   } else {
     IPH_CHKSUM_SET(iphdr, (u16_t)(IPH_CHKSUM(iphdr) + PP_HTONS(0x100)));
-  }
-
-  /* Take care of setting checksums to 0 for checksum offload netifs */
-  if (CHECKSUM_GEN_IP || NETIF_CHECKSUM_ENABLED(inp, NETIF_CHECKSUM_GEN_IP)) {
-    IPH_CHKSUM_SET(iphdr, 0);
-  }
-  switch (IPH_PROTO(iphdr)) {
-#if LWIP_UDP
-#if LWIP_UDPLITE
-  case IP_PROTO_UDPLITE:
-#endif
-  case IP_PROTO_UDP:
-    if (CHECKSUM_GEN_UDP || NETIF_CHECKSUM_ENABLED(inp, NETIF_CHECKSUM_GEN_UDP)) {
-      ((struct udp_hdr *)((u8_t *)iphdr + IPH_HL_BYTES(iphdr)))->chksum = 0;
-    }
-    break;
-#endif
-#if LWIP_TCP
-  case IP_PROTO_TCP:
-    if (CHECKSUM_GEN_TCP || NETIF_CHECKSUM_ENABLED(inp, NETIF_CHECKSUM_GEN_TCP)) {
-      ((struct tcp_hdr *)((u8_t *)iphdr + IPH_HL_BYTES(iphdr)))->chksum = 0;
-    }
-    break;
-#endif
-#if LWIP_ICMP
-  case IP_PROTO_ICMP:
-    if (CHECKSUM_GEN_ICMP || NETIF_CHECKSUM_ENABLED(inp, NETIF_CHECKSUM_GEN_ICMP)) {
-      ((struct icmp_hdr *)((u8_t *)iphdr + IPH_HL_BYTES(iphdr)))->chksum = 0;
-    }
-    break;
-#endif
-  default:
-    /* there's really nothing to do here other than satisfying 'switch-default' */
-    break;
   }
 
   LWIP_DEBUGF(IP_DEBUG, ("ip4_forward: forwarding packet to %"U16_F".%"U16_F".%"U16_F".%"U16_F"\n",
